@@ -8,6 +8,8 @@ import { formatCLP } from '@/lib/utils/formato';
 import { Phone, Mail, MapPin, Shield, Zap, Users, Calendar, Heart, MessageCircle } from 'lucide-react';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 interface VehiculoPageProps {
   params: { slug: string };
 }
