@@ -1,0 +1,26 @@
+{
+  "vehiculos_con_fotos": [
+    {
+      "id": "1",
+      "slug": "toyota-corolla-2020-abc123",
+      "marca": "Toyota",
+      "modelo": "Corolla",
+      "fotos": [
+        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='900'%3E%3Crect fill='%23e8f0f5' width='1600' height='900'/%3E%3Crect fill='%2387ceeb' width='1600' height='450'/%3E%3Ccircle cx='800' cy='300' r='200' fill='%23ffffff' opacity='0.1'/%3E%3Crect x='400' y='350' width='800' height='400' fill='%23c0c0c0' rx='40'/%3E%3Ccircle cx='550' cy='650' r='60' fill='%23333333'/%3E%3Ccircle cx='1050' cy='650' r='60' fill='%23333333'/%3E%3Crect x='420' y='400' width='600' height='200' fill='%23888888' rx='20'/%3E%3Ctext x='800' y='850' font-size='24' fill='%23666' text-anchor='middle' font-family='Arial'%3EToyota Corolla 2020 - Gris%3C/text%3E%3C/svg%3E",
+        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='900'%3E%3Crect fill='%23e8f0f5' width='1600' height='900'/%3E%3Crect fill='%2387ceeb' width='1600' height='450'/%3E%3Crect x='300' y='380' width='900' height='350' fill='%23a9a9a9' rx='40'/%3E%3Ccircle cx='450' cy='680' r='55' fill='%23222222'/%3E%3Ccircle cx='1150' cy='680' r='55' fill='%23222222'/%3E%3Crect x='320' y='430' width='700' height='180' fill='%23757575' rx='20'/%3E%3Crect x='1050' y='450' width='150' height='120' fill='%23555555'/%3E%3Ctext x='800' y='850' font-size='24' fill='%23666' text-anchor='middle' font-family='Arial'%3EToyota Corolla 2020 - Lateral%3C/text%3E%3C/svg%3E",
+        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='900'%3E%3Crect fill='%23f0f8ff' width='1600' height='900'/%3E%3Crect fill='%23b0e0e6' width='1600' height='450'/%3E%3Crect x='550' y='350' width='500' height='380' fill='%23c0c0c0' rx='30'/%3E%3Ccircle cx='650' cy='700' r='50' fill='%23333333'/%3E%3Ccircle cx='950' cy='700' r='50' fill='%23333333'/%3E%3Crect x='580' y='400' width='450' height='200' fill='%23888888' rx='15'/%3E%3Ctext x='800' y='850' font-size='24' fill='%23666' text-anchor='middle' font-family='Arial'%3EToyota Corolla 2020 - Trasera%3C/text%3E%3C/svg%3E"
+      ]
+    },
+    {
+      "id": "2",
+      "slug": "hyundai-tucson-2022-def456",
+      "marca": "Hyundai",
+      "modelo": "Tucson",
+      "fotos": [
+        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='900'%3E%3Crect fill='%23f5f5f5' width='1600' height='900'/%3E%3Crect fill='%23a8d8ff' width='1600' height='450'/%3E%3Crect x='350' y='300' width='900' height='450' fill='%23222222' rx='50'/%3E%3Ccircle cx='500' cy='700' r='65' fill='%23111111'/%3E%3Ccircle cx='1100' cy='700' r='65' fill='%23111111'/%3E%3Crect x='380' y='360' width='700' height='240' fill='%23444444' rx='25'/%3E%3Crect x='1100' y='400' width='180' height='150' fill='%23333333'/%3E%3Ctext x='800' y='850' font-size='24' fill='%23666' text-anchor='middle' font-family='Arial'%3EHyundai Tucson 2022 - Negro%3C/text%3E%3C/svg%3E",
+        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='900'%3E%3Crect fill='%23f5f5f5' width='1600' height='900'/%3E%3Crect fill='%23a8d8ff' width='1600' height='450'/%3E%3Crect x='250' y='320' width='1100' height='420' fill='%23222222' rx='50'/%3E%3Ccircle cx='420' cy='710' r='65' fill='%23111111'/%3E%3Ccircle cx='1180' cy='710' r='65' fill='%23111111'/%3E%3Crect x='280' y='380' width='850' height='220' fill='%23444444' rx='25'/%3E%3Crect x='1180' y='420' width='140' height='130' fill='%23555555'/%3E%3Ctext x='800' y='850' font-size='24' fill='%23666' text-anchor='middle' font-family='Arial'%3EHyundai Tucson 2022 - Lateral%3C/text%3E%3C/svg%3E",
+        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='900'%3E%3Crect fill='%23f5f5f5' width='1600' height='900'/%3E%3Crect fill='%23a8d8ff' width='1600' height='450'/%3E%3Crect x='500' y='300' width='600' height='430' fill='%23222222' rx='40'/%3E%3Ccircle cx='600' cy='710' r='60' fill='%23111111'/%3E%3Ccircle cx='1000' cy='710' r='60' fill='%23111111'/%3E%3Crect x='530' y='360' width='550' height='230' fill='%23444444' rx='20'/%3E%3Ctext x='800' y='850' font-size='24' fill='%23666' text-anchor='middle' font-family='Arial'%3EHyundai Tucson 2022 - Trasera%3C/text%3E%3C/svg%3E"
+      ]
+    }
+  ]
+}
