@@ -24,6 +24,11 @@ export interface Vehiculo {
   destacado: boolean;
   meta_descripcion?: string;
   fecha_publicacion?: string;
+  caracteristicas?: string[];
+  vendedor_nombre?: string;
+  vendedor_telefono?: string;
+  ubicacion?: string;
+  opciones_financiamiento?: string[];
   created_at: string;
   updated_at: string;
 }

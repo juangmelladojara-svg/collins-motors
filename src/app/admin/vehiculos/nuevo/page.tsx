@@ -32,7 +32,15 @@ export default function NuevoVehiculoPage() {
     color: '',
     puertas: 4,
     descripcion: '',
+    caracteristicas: [] as string[],
+    vendedor_nombre: '',
+    vendedor_telefono: '',
+    ubicacion: '',
+    opciones_financiamiento: [] as string[],
   });
+
+  const [caracteristicaInput, setCaracteristicaInput] = useState('');
+  const [financiamientoInput, setFinanciamientoInput] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -57,6 +65,40 @@ export default function NuevoVehiculoPage() {
 
   const removeImage = (index: number) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const addCaracteristica = () => {
+    if (caracteristicaInput.trim()) {
+      setForm((prev) => ({
+        ...prev,
+        caracteristicas: [...prev.caracteristicas, caracteristicaInput.trim()],
+      }));
+      setCaracteristicaInput('');
+    }
+  };
+
+  const removeCaracteristica = (index: number) => {
+    setForm((prev) => ({
+      ...prev,
+      caracteristicas: prev.caracteristicas.filter((_, i) => i !== index),
+    }));
+  };
+
+  const addFinanciamiento = () => {
+    if (financiamientoInput.trim()) {
+      setForm((prev) => ({
+        ...prev,
+        opciones_financiamiento: [...prev.opciones_financiamiento, financiamientoInput.trim()],
+      }));
+      setFinanciamientoInput('');
+    }
+  };
+
+  const removeFinanciamiento = (index: number) => {
+    setForm((prev) => ({
+      ...prev,
+      opciones_financiamiento: prev.opciones_financiamiento.filter((_, i) => i !== index),
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -303,6 +345,124 @@ export default function NuevoVehiculoPage() {
               rows={4}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
             />
+          </div>
+
+          {/* Información del vendedor */}
+          <div>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Información del vendedor</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Nombre del vendedor</label>
+                <input
+                  type="text"
+                  name="vendedor_nombre"
+                  placeholder="Ej: Juan Pérez"
+                  value={form.vendedor_nombre}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Teléfono</label>
+                <input
+                  type="text"
+                  name="vendedor_telefono"
+                  placeholder="Ej: +56 9 1234 5678"
+                  value={form.vendedor_telefono}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Ubicación */}
+          <div>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Ubicación</h2>
+            <input
+              type="text"
+              name="ubicacion"
+              placeholder="Ej: Bernardo O'Higgins 252, Temuco"
+              value={form.ubicacion}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            />
+          </div>
+
+          {/* Características */}
+          <div>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Características</h2>
+            <div className="flex gap-2 mb-3">
+              <input
+                type="text"
+                placeholder="Ej: Aire acondicionado"
+                value={caracteristicaInput}
+                onChange={(e) => setCaracteristicaInput(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && addCaracteristica()}
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+              />
+              <button
+                type="button"
+                onClick={addCaracteristica}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                Agregar
+              </button>
+            </div>
+            {form.caracteristicas.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {form.caracteristicas.map((car, idx) => (
+                  <div key={idx} className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full flex items-center gap-2">
+                    {car}
+                    <button
+                      type="button"
+                      onClick={() => removeCaracteristica(idx)}
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Opciones de financiamiento */}
+          <div>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Opciones de financiamiento</h2>
+            <div className="flex gap-2 mb-3">
+              <input
+                type="text"
+                placeholder="Ej: 20% para financiamiento"
+                value={financiamientoInput}
+                onChange={(e) => setFinanciamientoInput(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && addFinanciamiento()}
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+              />
+              <button
+                type="button"
+                onClick={addFinanciamiento}
+                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+              >
+                Agregar
+              </button>
+            </div>
+            {form.opciones_financiamiento.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {form.opciones_financiamiento.map((fin, idx) => (
+                  <div key={idx} className="bg-green-100 text-green-800 px-3 py-1 rounded-full flex items-center gap-2">
+                    {fin}
+                    <button
+                      type="button"
+                      onClick={() => removeFinanciamiento(idx)}
+                      className="text-green-600 hover:text-green-800"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Imágenes */}
