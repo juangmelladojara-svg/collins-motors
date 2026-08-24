@@ -180,32 +180,41 @@ export default function NuevoVehiculoPage() {
           <div>
             <h2 className="text-xl font-bold text-gray-900 mb-4">Precio y kilometraje</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <input
-                type="number"
-                name="precio"
-                placeholder="Precio (CLP)"
-                value={form.precio}
-                onChange={handleInputChange}
-                required
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-              />
-              <input
-                type="number"
-                name="precio_anterior"
-                placeholder="Precio anterior (opcional)"
-                value={form.precio_anterior}
-                onChange={handleInputChange}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-              />
-              <input
-                type="number"
-                name="kilometraje"
-                placeholder="Kilometraje"
-                value={form.kilometraje}
-                onChange={handleInputChange}
-                required
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-              />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Precio (CLP) *</label>
+                <input
+                  type="number"
+                  name="precio"
+                  placeholder="Ej: 15000000"
+                  value={form.precio}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Precio anterior (opcional)</label>
+                <input
+                  type="number"
+                  name="precio_anterior"
+                  placeholder="Ej: 16500000"
+                  value={form.precio_anterior}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Kilometraje *</label>
+                <input
+                  type="number"
+                  name="kilometraje"
+                  placeholder="Ej: 45000"
+                  value={form.kilometraje}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                />
+              </div>
             </div>
           </div>
 
