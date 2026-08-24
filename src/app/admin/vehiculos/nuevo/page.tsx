@@ -222,58 +222,73 @@ export default function NuevoVehiculoPage() {
           <div>
             <h2 className="text-xl font-bold text-gray-900 mb-4">Especificaciones técnicas</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <select
-                name="carroceria"
-                value={form.carroceria}
-                onChange={handleInputChange}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-              >
-                {CARROCERIAS.map((c) => (
-                  <option key={c} value={c}>
-                    {c.charAt(0).toUpperCase() + c.slice(1)}
-                  </option>
-                ))}
-              </select>
-              <select
-                name="transmision"
-                value={form.transmision}
-                onChange={handleInputChange}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-              >
-                {TRANSMISIONES.map((t) => (
-                  <option key={t} value={t}>
-                    {t.charAt(0).toUpperCase() + t.slice(1)}
-                  </option>
-                ))}
-              </select>
-              <select
-                name="combustible"
-                value={form.combustible}
-                onChange={handleInputChange}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-              >
-                {COMBUSTIBLES.map((c) => (
-                  <option key={c} value={c}>
-                    {c.charAt(0).toUpperCase() + c.slice(1)}
-                  </option>
-                ))}
-              </select>
-              <input
-                type="text"
-                name="color"
-                placeholder="Color"
-                value={form.color}
-                onChange={handleInputChange}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-              />
-              <input
-                type="number"
-                name="puertas"
-                placeholder="Puertas"
-                value={form.puertas}
-                onChange={handleInputChange}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-              />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Carrocería</label>
+                <select
+                  name="carroceria"
+                  value={form.carroceria}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                >
+                  {CARROCERIAS.map((c) => (
+                    <option key={c} value={c}>
+                      {c.charAt(0).toUpperCase() + c.slice(1)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Transmisión</label>
+                <select
+                  name="transmision"
+                  value={form.transmision}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                >
+                  {TRANSMISIONES.map((t) => (
+                    <option key={t} value={t}>
+                      {t.charAt(0).toUpperCase() + t.slice(1)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Combustible</label>
+                <select
+                  name="combustible"
+                  value={form.combustible}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                >
+                  {COMBUSTIBLES.map((c) => (
+                    <option key={c} value={c}>
+                      {c.charAt(0).toUpperCase() + c.slice(1)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Color</label>
+                <input
+                  type="text"
+                  name="color"
+                  placeholder="Ej: Gris"
+                  value={form.color}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Puertas</label>
+                <input
+                  type="number"
+                  name="puertas"
+                  placeholder="Ej: 4"
+                  value={form.puertas}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                />
+              </div>
             </div>
           </div>
 
