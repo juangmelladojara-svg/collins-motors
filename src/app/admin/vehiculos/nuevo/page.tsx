@@ -137,22 +137,41 @@ export default function NuevoVehiculoPage() {
       }
 
       // Subir imágenes si existen
-      if (images.length > 0) {
-        for (let i = 0; i < images.length; i++) {
-          const file = images[i];
-          const storagePath = `${vehiculo.id}/foto-${i + 1}-${Date.now()}.jpg`;
+      const fallidas: string[] = [];
 
-          const { error: uploadError } = await supabase.storage.from('vehiculos').upload(storagePath, file);
+      for (let i = 0; i < images.length; i++) {
+        const file = images[i];
+        const extension = file.name.split('.').pop()?.toLowerCase() || 'jpg';
+        const storagePath = `${vehiculo.id}/foto-${i + 1}-${Date.now()}.${extension}`;
 
-          if (!uploadError) {
-            await supabase.from('vehiculo_imagenes').insert({
-              vehiculo_id: vehiculo.id,
-              storage_path: storagePath,
-              orden: i,
-              es_principal: i === 0,
-            });
-          }
+        const { error: uploadError } = await supabase.storage
+          .from('vehiculos')
+          .upload(storagePath, file, { contentType: file.type });
+
+        if (uploadError) {
+          fallidas.push(`${file.name}: ${uploadError.message}`);
+          continue;
         }
+
+        const { error: registroError } = await supabase.from('vehiculo_imagenes').insert({
+          vehiculo_id: vehiculo.id,
+          storage_path: storagePath,
+          orden: i,
+          es_principal: i === 0,
+        });
+
+        if (registroError) {
+          fallidas.push(`${file.name}: ${registroError.message}`);
+        }
+      }
+
+      // El vehículo ya existe, así que no volvemos al listado en silencio:
+      // hay que poder corregir las fotos que no subieron.
+      if (fallidas.length > 0) {
+        setError(
+          `El vehículo se creó, pero ${fallidas.length} de ${images.length} foto(s) no se pudieron subir:\n${fallidas.join('\n')}`
+        );
+        return;
       }
 
       router.push('/admin');
@@ -179,7 +198,7 @@ export default function NuevoVehiculoPage() {
       <main className="max-w-4xl mx-auto px-4 py-8">
         <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-8 space-y-6">
           {error && (
-            <div className="p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+            <div className="p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg whitespace-pre-line">
               {error}
             </div>
           )}

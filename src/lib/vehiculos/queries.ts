@@ -96,6 +96,27 @@ export async function obtenerPorSlug(slug: string): Promise<Vehiculo | null> {
   return data as Vehiculo;
 }
 
+/** URLs públicas de las fotos de un vehículo, en el orden definido por el admin. */
+export async function obtenerImagenes(vehiculoId: string): Promise<string[]> {
+  if (USE_MOCK) return [];
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from('vehiculo_imagenes')
+    .select('storage_path')
+    .eq('vehiculo_id', vehiculoId)
+    .order('orden', { ascending: true });
+
+  if (error) {
+    console.error('Error fetching vehicle images:', error);
+    return [];
+  }
+
+  return (data as { storage_path: string }[]).map(
+    ({ storage_path }) => supabase.storage.from('vehiculos').getPublicUrl(storage_path).data.publicUrl
+  );
+}
+
 export async function obtenerDestacados(): Promise<Vehiculo[]> {
   // Fallback a mock data
   if (USE_MOCK) {

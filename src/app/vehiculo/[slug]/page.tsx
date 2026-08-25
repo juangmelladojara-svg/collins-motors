@@ -3,7 +3,7 @@ import { Navbar } from '@/components/layout/navbar';
 import { Footer } from '@/components/layout/footer';
 import { GaleriaCarousel } from '@/components/catalogo/galeria-carousel';
 import { SimuladorCuotas } from '@/components/catalogo/simulador-cuotas';
-import { obtenerPorSlug } from '@/lib/vehiculos/queries';
+import { obtenerPorSlug, obtenerImagenes } from '@/lib/vehiculos/queries';
 import { formatCLP } from '@/lib/utils/formato';
 import { Phone, Mail, MapPin, Shield, Zap, Users, Calendar, Heart, MessageCircle } from 'lucide-react';
 import Link from 'next/link';
@@ -60,7 +60,10 @@ export default async function VehiculoPage({ params }: VehiculoPageProps) {
     );
   }
 
-  const imagenes = getImagenesParaVehiculo(vehiculo.slug);
+  // Fotos reales cargadas por el admin. Los SVG de arriba son solo decoración
+  // para los vehículos de ejemplo sembrados, que todavía no tienen fotos.
+  const imagenesReales = await obtenerImagenes(vehiculo.id);
+  const imagenes = imagenesReales.length > 0 ? imagenesReales : getImagenesParaVehiculo(vehiculo.slug);
 
   return (
     <>

@@ -190,23 +190,41 @@ export default function EditarVehiculoPage() {
         return;
       }
 
-      if (newImages.length > 0) {
-        const maxOrden = existingImages.length > 0 ? Math.max(...existingImages.map((img) => img.orden)) : -1;
-        for (let i = 0; i < newImages.length; i++) {
-          const file = newImages[i];
-          const storagePath = `${vehiculoId}/foto-${maxOrden + i + 2}-${Date.now()}.jpg`;
+      const maxOrden = existingImages.length > 0 ? Math.max(...existingImages.map((img) => img.orden)) : -1;
+      const fallidas: string[] = [];
 
-          const { error: uploadError } = await supabase.storage.from('vehiculos').upload(storagePath, file);
+      for (let i = 0; i < newImages.length; i++) {
+        const file = newImages[i];
+        const extension = file.name.split('.').pop()?.toLowerCase() || 'jpg';
+        const storagePath = `${vehiculoId}/foto-${maxOrden + i + 2}-${Date.now()}.${extension}`;
 
-          if (!uploadError) {
-            await supabase.from('vehiculo_imagenes').insert({
-              vehiculo_id: vehiculoId,
-              storage_path: storagePath,
-              orden: maxOrden + i + 1,
-              es_principal: false,
-            });
-          }
+        const { error: uploadError } = await supabase.storage
+          .from('vehiculos')
+          .upload(storagePath, file, { contentType: file.type });
+
+        if (uploadError) {
+          fallidas.push(`${file.name}: ${uploadError.message}`);
+          continue;
         }
+
+        const { error: registroError } = await supabase.from('vehiculo_imagenes').insert({
+          vehiculo_id: vehiculoId,
+          storage_path: storagePath,
+          // Si no había ninguna foto, la primera que suba es la principal.
+          orden: maxOrden + i + 1,
+          es_principal: existingImages.length === 0 && i === 0,
+        });
+
+        if (registroError) {
+          fallidas.push(`${file.name}: ${registroError.message}`);
+        }
+      }
+
+      if (fallidas.length > 0) {
+        setError(
+          `Los datos se guardaron, pero ${fallidas.length} de ${newImages.length} foto(s) no se pudieron subir:\n${fallidas.join('\n')}`
+        );
+        return;
       }
 
       setSuccess('Vehículo actualizado correctamente');
@@ -244,7 +262,7 @@ export default function EditarVehiculoPage() {
       <main className="max-w-4xl mx-auto px-4 py-8">
         <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-8 space-y-6">
           {error && (
-            <div className="p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+            <div className="p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg whitespace-pre-line">
               {error}
             </div>
           )}
