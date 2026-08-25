@@ -13,6 +13,7 @@ export default function AdminDashboard() {
 
   const [vehiculos, setVehiculos] = useState<Vehiculo[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
@@ -36,13 +37,17 @@ export default function AdminDashboard() {
   const fetchVehiculos = async () => {
     const { data, error } = await supabase.from('vehiculos').select('*').order('created_at', { ascending: false });
 
+    // Pase lo que pase hay que soltar el loading, o el dashboard se queda
+    // colgado en "Cargando..." sin explicar nada.
+    setLoading(false);
+
     if (error) {
-      console.error(error);
+      setError(`No se pudo cargar el inventario: ${error.message}`);
       return;
     }
 
+    setError('');
     setVehiculos(data || []);
-    setLoading(false);
   };
 
   const handleLogout = async () => {
@@ -53,19 +58,45 @@ export default function AdminDashboard() {
   const handleTogglePublish = async (id: string, publicado: boolean) => {
     const { error } = await supabase.from('vehiculos').update({ publicado: !publicado }).eq('id', id);
 
-    if (!error) {
-      fetchVehiculos();
+    if (error) {
+      setError(`No se pudo cambiar la publicación: ${error.message}`);
+      return;
     }
+
+    setError('');
+    fetchVehiculos();
   };
 
   const handleDelete = async (id: string) => {
     if (!confirm('¿Estás seguro de que deseas eliminar este vehículo?')) return;
 
+    // Borrar el vehículo hace CASCADE sobre vehiculo_imagenes, pero no toca los
+    // archivos: hay que sacarlos del bucket antes o quedan huérfanos para siempre.
+    const { data: imagenes } = await supabase
+      .from('vehiculo_imagenes')
+      .select('storage_path')
+      .eq('vehiculo_id', id);
+
+    if (imagenes && imagenes.length > 0) {
+      const { error: storageError } = await supabase.storage
+        .from('vehiculos')
+        .remove(imagenes.map(({ storage_path }) => storage_path));
+
+      if (storageError) {
+        setError(`No se pudieron eliminar las fotos: ${storageError.message}`);
+        return;
+      }
+    }
+
     const { error } = await supabase.from('vehiculos').delete().eq('id', id);
 
-    if (!error) {
-      fetchVehiculos();
+    if (error) {
+      setError(`No se pudo eliminar el vehículo: ${error.message}`);
+      return;
     }
+
+    setError('');
+    fetchVehiculos();
   };
 
   if (!user || loading) {
@@ -92,6 +123,12 @@ export default function AdminDashboard() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 py-8">
+        {error && (
+          <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg whitespace-pre-line">
+            {error}
+          </div>
+        )}
+
         <div className="mb-8 flex gap-4">
           <Link
             href="/admin/vehiculos/nuevo"

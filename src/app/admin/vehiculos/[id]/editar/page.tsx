@@ -131,13 +131,32 @@ export default function EditarVehiculoPage() {
   };
 
   const removeExistingImage = async (imageId: string) => {
-    try {
-      await supabase.from('vehiculo_imagenes').delete().eq('id', imageId);
-      setExistingImages((prev) => prev.filter((img) => img.id !== imageId));
-    } catch (err) {
-      setError('Error al eliminar imagen');
-      console.error(err);
+    const imagen = existingImages.find((img) => img.id === imageId);
+    if (!imagen) return;
+
+    // Primero el archivo y después el registro: si el archivo no se borra,
+    // preferimos dejar la foto visible antes que un registro apuntando a nada.
+    const { error: storageError } = await supabase.storage
+      .from('vehiculos')
+      .remove([imagen.storage_path]);
+
+    if (storageError) {
+      setError(`No se pudo eliminar la foto: ${storageError.message}`);
+      return;
     }
+
+    const { error: registroError } = await supabase
+      .from('vehiculo_imagenes')
+      .delete()
+      .eq('id', imageId);
+
+    if (registroError) {
+      setError(`No se pudo eliminar la foto: ${registroError.message}`);
+      return;
+    }
+
+    setError('');
+    setExistingImages((prev) => prev.filter((img) => img.id !== imageId));
   };
 
   const addCaracteristica = () => {
