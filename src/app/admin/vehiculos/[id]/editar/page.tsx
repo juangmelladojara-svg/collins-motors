@@ -12,6 +12,7 @@ const TRANSMISIONES = ['manual', 'automatica'];
 const COMBUSTIBLES = ['bencina', 'diesel', 'hibrido', 'electrico'];
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default function EditarVehiculoPage() {
   const router = useRouter();
