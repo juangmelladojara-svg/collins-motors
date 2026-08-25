@@ -11,6 +11,8 @@ const CARROCERIAS = ['sedan', 'suv', 'hatchback', 'camioneta', 'furgon'];
 const TRANSMISIONES = ['manual', 'automatica'];
 const COMBUSTIBLES = ['bencina', 'diesel', 'hibrido', 'electrico'];
 
+export const dynamic = 'force-dynamic';
+
 export default function EditarVehiculoPage() {
   const router = useRouter();
   const params = useParams();
