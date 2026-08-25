@@ -38,7 +38,7 @@ export function Navbar() {
         {/* CTA + Mobile Toggle */}
         <div className="flex items-center gap-4">
           <a
-            href="https://wa.me/56912345678?text=Hola%2C%20me%20interesa%20conocer%20los%20veh%C3%ADculos%20disponibles"
+            href="https://wa.me/56961511074?text=Hola%2C%20me%20interesa%20conocer%20los%20veh%C3%ADculos%20disponibles"
             className="hidden sm:inline-block px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover transition text-sm font-semibold"
           >
             WhatsApp
@@ -70,7 +70,7 @@ export function Navbar() {
               </Link>
             ))}
             <a
-              href="https://wa.me/56912345678?text=Hola%2C%20me%20interesa%20conocer%20los%20veh%C3%ADculos%20disponibles"
+              href="https://wa.me/56961511074?text=Hola%2C%20me%20interesa%20conocer%20los%20veh%C3%ADculos%20disponibles"
               className="block w-full px-4 py-2 bg-primary text-white rounded-lg text-center font-semibold mt-4"
             >
               Contactar por WhatsApp

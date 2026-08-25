@@ -92,7 +92,7 @@ export function Footer() {
           {/* CTA */}
           <div className="text-center mb-8">
             <a
-              href="https://wa.me/56912345678?text=Hola%2C%20me%20interesa%20conocer%20los%20veh%C3%ADculos%20disponibles"
+              href="https://wa.me/56961511074?text=Hola%2C%20me%20interesa%20conocer%20los%20veh%C3%ADculos%20disponibles"
               className="inline-block px-8 py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary-hover transition-colors"
             >
               Contactar por WhatsApp

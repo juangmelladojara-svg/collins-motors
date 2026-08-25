@@ -159,7 +159,7 @@ export function SimuladorCuotas({ precioVehiculo, isOpen = true, onClose }: Simu
             </button>
           )}
           <a
-            href="https://wa.me/56912345678?text=Hola%2C%20me%20gustar%C3%ADa%20conocer%20las%20opciones%20de%20financiamiento"
+            href="https://wa.me/56961511074?text=Hola%2C%20me%20gustar%C3%ADa%20conocer%20las%20opciones%20de%20financiamiento"
             className={`${onClose ? '' : 'col-span-2'} px-4 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-hover active:scale-[0.98] transition text-center`}
           >
             Consultar financiamiento

@@ -2,6 +2,7 @@
 
 import { Vehiculo } from '@/lib/vehiculos/tipos';
 import { formatCLP, calcularDescuento } from '@/lib/utils/formato';
+import { linkWhatsApp } from '@/lib/contacto';
 import Link from 'next/link';
 import { MapPin, Gauge, Zap, Users, Heart, TrendingDown, Image as ImageIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
@@ -171,7 +172,12 @@ export function TarjetaVehiculoMejorada({ vehiculo }: TarjetaVehiculoMejoradaPro
               Ver detalles
             </button>
             <a
-              href={`https://wa.me/56912345678?text=Hola%2C%20me%20interesa%20el%20${encodeURIComponent(vehiculo.marca + ' ' + vehiculo.modelo + ' ' + vehiculo.anio)}`}
+              href={linkWhatsApp(
+                `Hola, me interesa el ${vehiculo.marca} ${vehiculo.modelo} ${vehiculo.anio} que vi en la web de Collins Motors.`,
+                vehiculo.vendedor_telefono
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
               className="px-3 py-2 border-2 border-primary text-primary font-semibold rounded-lg hover:bg-primary hover:text-white active:scale-[0.98] transition text-sm text-center"
             >
