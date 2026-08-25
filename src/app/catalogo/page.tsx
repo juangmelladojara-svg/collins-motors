@@ -42,6 +42,7 @@ export default async function CatalogoPage({ searchParams }: CatalogoPageProps) 
     anio_min: numero(sp.anio_min),
     anio_max: numero(sp.anio_max),
     q: texto(sp.q),
+    orden: texto(sp.orden) as FiltrosCatalogoTipo['orden'],
   };
 
   const [vehiculos, marcas] = await Promise.all([
@@ -55,54 +56,48 @@ export default async function CatalogoPage({ searchParams }: CatalogoPageProps) 
   return (
     <>
       <Navbar />
-      <main className="min-h-screen py-12 md:py-20 bg-white dark:bg-zinc-950">
+      <main className="min-h-screen py-10 md:py-16 bg-background">
         <div className="container mx-auto px-4 max-w-7xl">
-          <div className="mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-2">
-              Catálogo de Vehículos
-            </h1>
+          <header className="mb-8">
+            <h1 className="text-4xl md:text-6xl font-semibold mb-2">Catálogo</h1>
             <p className="text-lg text-muted-foreground">
-              {vehiculos.length} vehículos disponibles en Temuco
+              Vehículos seleccionados y revisados en Temuco
             </p>
+          </header>
+
+          {/* Filtros en barra superior: libera el ancho completo para la grilla,
+              que pasa de 2 a 3 columnas y muestra más autos sin hacer scroll. */}
+          <div className="mb-8">
+            <FiltrosCatalogo marcas={marcas} total={vehiculos.length} />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            {/* Sidebar con filtros */}
-            <div className="lg:col-span-1">
-              <FiltrosCatalogo marcas={marcas} />
+          {vehiculos.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+              {vehiculos.map((vehiculo) => (
+                <TarjetaVehiculoMejorada
+                  key={vehiculo.id}
+                  vehiculo={vehiculo}
+                  imagenUrl={fotos[vehiculo.id]?.url}
+                  totalFotos={fotos[vehiculo.id]?.total ?? 0}
+                />
+              ))}
             </div>
-
-            {/* Grilla de vehículos */}
-            <div className="lg:col-span-3">
-              {vehiculos.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {vehiculos.map((vehiculo) => (
-                    <TarjetaVehiculoMejorada
-                      key={vehiculo.id}
-                      vehiculo={vehiculo}
-                      imagenUrl={fotos[vehiculo.id]?.url}
-                      totalFotos={fotos[vehiculo.id]?.total ?? 0}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <div className="col-span-full text-center py-20">
+          ) : (
+            <div className="text-center py-24 border border-border rounded-2xl bg-surface">
                   <h3 className="text-2xl font-bold text-foreground mb-3">
                     No encontramos vehículos
                   </h3>
                   <p className="text-muted-foreground mb-6">
-                    Intenta ajustar los filtros para ver más opciones
+                    Prueba quitando algún filtro o escribiendo solo la marca
                   </p>
                   <a
                     href="/catalogo"
-                    className="inline-block px-6 py-2 bg-primary text-white font-semibold rounded-lg hover:bg-primary-hover transition"
+                    className="inline-block px-6 py-3 bg-primary text-white font-semibold rounded-xl hover:bg-primary-hover transition"
                   >
                     Ver todos los vehículos
                   </a>
-                </div>
-              )}
             </div>
-          </div>
+          )}
         </div>
       </main>
       <Footer />

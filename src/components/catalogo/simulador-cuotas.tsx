@@ -131,7 +131,7 @@ export function SimuladorCuotas({ precioVehiculo, isOpen = true, onClose }: Simu
           </div>
           <div className="flex justify-between">
             <span className="text-muted-foreground">Intereses totales:</span>
-            <span className="font-semibold text-accent">{formatCLP(totalIntereses)}</span>
+            <span className="font-semibold text-primary">{formatCLP(totalIntereses)}</span>
           </div>
           <div className="border-t border-border pt-3 flex justify-between">
             <span className="text-muted-foreground">Total a pagar:</span>
@@ -140,7 +140,7 @@ export function SimuladorCuotas({ precioVehiculo, isOpen = true, onClose }: Simu
         </div>
 
         {/* Cuota destacada */}
-        <div className="bg-gradient-to-br from-primary/10 to-accent/10 border border-primary/20 p-6 rounded-xl text-center">
+        <div className="bg-muted border border-primary/20 p-6 rounded-xl text-center">
           <p className="text-sm text-muted-foreground mb-2">Cuota mensual estimada</p>
           <p className="text-4xl font-bold text-primary">{formatCLP(cuotaMensual)}</p>
           <p className="text-xs text-muted-foreground mt-2">

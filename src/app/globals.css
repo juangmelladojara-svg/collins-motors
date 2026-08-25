@@ -1,41 +1,45 @@
 @import "tailwindcss";
 
+/*
+ * Un solo acento. Antes convivían el rojo de marca, un naranja y un azul, que
+ * es lo que hace que un sitio se lea barato: nada destaca porque todo grita.
+ * El rojo queda como único color de acción; los grises hacen el resto.
+ */
 :root {
-  /* Tema claro */
   --background: #ffffff;
-  --foreground: #1a1a1a;
-  --muted: #f5f5f5;
-  --muted-foreground: #666666;
-  --border: #e5e5e5;
-  --primary: #cc2936;
-  --primary-hover: #a01f2a;
-  --secondary: #0d47a1;
-  --accent: #ff6b35;
+  --surface: #fafaf9;
+  --foreground: #12100f;
+  --muted: #f5f4f2;
+  --muted-foreground: #6b6763;
+  --border: #e7e5e2;
+  --primary: #c2202e;
+  --primary-hover: #9b1926;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--surface);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
-  --color-secondary: var(--secondary);
-  --color-accent: var(--accent);
+
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display), var(--font-sans), ui-sans-serif, sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #e8e8e8;
-    --muted: #1a1a1a;
-    --muted-foreground: #a0a0a0;
-    --border: #2a2a2a;
-    --primary: #ff3d47;
-    --primary-hover: #e63942;
-    --secondary: #4a7bc6;
-    --accent: #ff9850;
+    --background: #0c0b0a;
+    --surface: #141312;
+    --foreground: #ede9e6;
+    --muted: #1a1918;
+    --muted-foreground: #9c9691;
+    --border: #292725;
+    --primary: #ef3b47;
+    --primary-hover: #d62f3b;
   }
 }
 
@@ -43,28 +47,34 @@
   body {
     background: var(--background);
     color: var(--foreground);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
     line-height: 1.6;
   }
 
-  svg.noise-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    opacity: 0.05;
-    z-index: 9999;
+  /* Titulares: la fuente display, apretada. El contraste de escala y el
+     tracking negativo es lo que da el aire caro, no los adornos. */
+  h1, h2, h3 {
+    font-family: var(--font-display), var(--font-sans), sans-serif;
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+  }
+
+  /* Cifras alineadas: precios y kilometrajes no deben bailar entre filas. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
   }
 }
 
-/* Scroll suave global */
 html {
   scroll-behavior: smooth;
 }
 
-/* Selección de texto con tema */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 ::selection {
   background-color: var(--primary);
   color: white;

@@ -1,10 +1,21 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
+// Outfit para titulares y precios: geométrica y firme, con buen peso alto.
+const display = Outfit({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  display: "swap",
+});
+
+// Plus Jakarta Sans para el resto: más legible en textos largos y formularios.
+const sans = Plus_Jakarta_Sans({
   variable: "--font-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -22,7 +33,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${inter.variable} h-full antialiased`}
+      className={`${display.variable} ${sans.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>
@@ -30,15 +41,6 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" />
       </head>
       <body className="min-h-screen flex flex-col bg-background text-foreground">
-        {/* Overlay de ruido global */}
-        <svg className="noise-overlay" xmlns="http://www.w3.org/2000/svg">
-          <filter id="noise">
-            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="noise" />
-            <feColorMatrix in="noise" type="saturate" values="0" />
-          </filter>
-          <rect width="100%" height="100%" filter="url(#noise)" opacity="0.05" />
-        </svg>
-
         {children}
       </body>
     </html>

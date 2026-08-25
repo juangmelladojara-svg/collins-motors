@@ -4,8 +4,8 @@ import { Vehiculo } from '@/lib/vehiculos/tipos';
 import { formatCLP, calcularDescuento } from '@/lib/utils/formato';
 import { linkWhatsApp } from '@/lib/contacto';
 import Link from 'next/link';
-import { MapPin, Gauge, Zap, Users, Heart, TrendingDown, Image as ImageIcon } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { MapPin, Gauge, Zap, Users, TrendingDown, Image as ImageIcon } from 'lucide-react';
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 
 interface TarjetaVehiculoMejoradaProps {
@@ -21,7 +21,6 @@ export function TarjetaVehiculoMejorada({
   totalFotos = 0,
 }: TarjetaVehiculoMejoradaProps) {
   const cardRef = useRef<HTMLDivElement>(null);
-  const [isLiked, setIsLiked] = useState(false);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -35,22 +34,6 @@ export function TarjetaVehiculoMejorada({
         ease: 'power3.out',
       });
 
-      // Hover effect
-      cardRef.current.addEventListener('mouseenter', () => {
-        gsap.to(cardRef.current, {
-          y: -12,
-          duration: 0.3,
-          ease: 'power3.out',
-        });
-      });
-
-      cardRef.current.addEventListener('mouseleave', () => {
-        gsap.to(cardRef.current, {
-          y: 0,
-          duration: 0.3,
-          ease: 'power3.out',
-        });
-      });
     }, cardRef);
 
     return () => ctx.revert();
@@ -66,10 +49,10 @@ export function TarjetaVehiculoMejorada({
     <Link href={`/vehiculo/${vehiculo.slug}`}>
       <div
         ref={cardRef}
-        className="bg-white dark:bg-zinc-900 rounded-2xl overflow-hidden border border-border hover:border-primary/50 transition-all shadow-sm hover:shadow-lg cursor-pointer group flex flex-col h-full"
+        className="bg-surface rounded-2xl overflow-hidden border border-border hover:border-primary/40 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-foreground/5 transition-all duration-300 cursor-pointer group flex flex-col h-full"
       >
         {/* Imagen */}
-        <div className="relative h-48 md:h-56 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-zinc-800 dark:to-zinc-900 overflow-hidden">
+        <div className="relative aspect-[4/3] bg-muted overflow-hidden">
           {imagenUrl ? (
             <img
               src={imagenUrl}
@@ -101,26 +84,12 @@ export function TarjetaVehiculoMejorada({
             )}
 
             {descuento && descuento > 0 && (
-              <div className="bg-accent text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+              <div className="bg-primary text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
                 <TrendingDown size={12} />
                 -{descuento}%
               </div>
             )}
           </div>
-
-          {/* Botón like */}
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              setIsLiked(!isLiked);
-            }}
-            className="absolute top-3 right-3 p-2 bg-white/80 dark:bg-zinc-900/80 rounded-lg hover:bg-white dark:hover:bg-zinc-800 transition group-hover:scale-110 active:scale-95"
-          >
-            <Heart
-              size={20}
-              className={isLiked ? 'fill-red-500 text-red-500' : 'text-muted-foreground'}
-            />
-          </button>
 
           {/* Contador de fotos */}
           {totalFotos > 0 && (
@@ -173,7 +142,7 @@ export function TarjetaVehiculoMejorada({
             </div>
             <div className="flex items-center gap-2 text-muted-foreground">
               <MapPin size={16} className="text-primary flex-shrink-0" />
-              <span>Temuco</span>
+              <span className="truncate">{vehiculo.ubicacion || 'Temuco'}</span>
             </div>
           </div>
 
@@ -186,9 +155,11 @@ export function TarjetaVehiculoMejorada({
 
           {/* CTA múltiple */}
           <div className="grid grid-cols-2 gap-2 mt-auto pt-2">
-            <button className="px-3 py-2 bg-primary text-white font-semibold rounded-lg hover:bg-primary-hover active:scale-[0.98] transition text-sm">
+            {/* La tarjeta entera ya es el enlace, así que esto es solo el
+                affordance visual: un <button> dentro de un <a> es inválido. */}
+            <span className="px-3 py-2.5 bg-primary text-white font-semibold rounded-xl group-hover:bg-primary-hover transition text-sm text-center">
               Ver detalles
-            </button>
+            </span>
             <a
               href={linkWhatsApp(
                 `Hola, me interesa el ${vehiculo.marca} ${vehiculo.modelo} ${vehiculo.anio} que vi en la web de Collins Motors.`,
@@ -197,7 +168,7 @@ export function TarjetaVehiculoMejorada({
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="px-3 py-2 border-2 border-primary text-primary font-semibold rounded-lg hover:bg-primary hover:text-white active:scale-[0.98] transition text-sm text-center"
+              className="px-3 py-2 border-2 border-primary text-primary font-semibold rounded-xl hover:bg-primary hover:text-white active:scale-[0.98] transition text-sm text-center"
             >
               WhatsApp
             </a>
