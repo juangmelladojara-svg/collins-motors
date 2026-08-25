@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { Upload, X, GripVertical } from 'lucide-react';
 import Link from 'next/link';
+import { formatearMiles, soloDigitos } from '@/lib/formato';
 
 const CARROCERIAS = ['sedan', 'suv', 'hatchback', 'camioneta', 'furgon'];
 const TRANSMISIONES = ['manual', 'automatica'];
@@ -50,6 +51,13 @@ export default function NuevoVehiculoPage() {
         ? parseInt(value) || 0
         : value,
     }));
+  };
+
+  // Campos con separador de miles: guardamos el número, mostramos el formato.
+  const handleNumeroChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const digitos = soloDigitos(value);
+    setForm((prev) => ({ ...prev, [name]: digitos ? parseInt(digitos, 10) : 0 }));
   };
 
   const handleImageDrop = (e: React.DragEvent) => {
@@ -224,38 +232,50 @@ export default function NuevoVehiculoPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Precio (CLP) *</label>
-                <input
-                  type="number"
-                  name="precio"
-                  placeholder="Ej: 15000000"
-                  value={form.precio}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                />
+                <div className="relative">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">$</span>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    name="precio"
+                    placeholder="15.000.000"
+                    value={formatearMiles(form.precio)}
+                    onChange={handleNumeroChange}
+                    required
+                    className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  />
+                </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Precio anterior (opcional)</label>
-                <input
-                  type="number"
-                  name="precio_anterior"
-                  placeholder="Ej: 16500000"
-                  value={form.precio_anterior}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                />
+                <div className="relative">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">$</span>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    name="precio_anterior"
+                    placeholder="16.500.000"
+                    value={formatearMiles(form.precio_anterior)}
+                    onChange={handleNumeroChange}
+                    className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  />
+                </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Kilometraje *</label>
-                <input
-                  type="number"
-                  name="kilometraje"
-                  placeholder="Ej: 45000"
-                  value={form.kilometraje}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
-                />
+                <div className="relative">
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    name="kilometraje"
+                    placeholder="45.000"
+                    value={formatearMiles(form.kilometraje)}
+                    onChange={handleNumeroChange}
+                    required
+                    className="w-full pl-4 pr-12 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                  />
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">km</span>
+                </div>
               </div>
             </div>
           </div>
