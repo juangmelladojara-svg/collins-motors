@@ -11,12 +11,13 @@ import Link from 'next/link';
 export const dynamic = 'force-dynamic';
 
 interface VehiculoPageProps {
-  params: { slug: string };
+  // En Next 16 params es asíncrono: hay que await antes de leerlo.
+  params: Promise<{ slug: string }>;
 }
 
 export default async function VehiculoPage({ params }: VehiculoPageProps) {
-  // TODO: Cargar datos reales en Fase 2
-  const vehiculo = await obtenerPorSlug(params.slug);
+  const { slug } = await params;
+  const vehiculo = await obtenerPorSlug(slug);
 
   // Mapear imágenes según el vehículo
   const getImagenesParaVehiculo = (slug: string): string[] => {

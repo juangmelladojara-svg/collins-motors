@@ -4,6 +4,7 @@ import { Footer } from '@/components/layout/footer';
 import { FiltrosCatalogo } from '@/components/catalogo/filtros-catalogo';
 import { TarjetaVehiculoMejorada } from '@/components/catalogo/tarjeta-vehiculo-mejorada';
 import { listarVehiculos, obtenerMarcas } from '@/lib/vehiculos/queries';
+import type { FiltrosCatalogo as FiltrosCatalogoTipo } from '@/lib/vehiculos/tipos';
 
 export const dynamic = 'force-dynamic';
 
@@ -13,42 +14,34 @@ export const metadata: Metadata = {
 };
 
 interface CatalogoPageProps {
-  searchParams: { [key: string]: string | string[] | undefined };
+  // En Next 16 searchParams es asíncrono: hay que await antes de leerlo.
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 export default async function CatalogoPage({ searchParams }: CatalogoPageProps) {
-  // Normalizar searchParams (pueden ser arrays)
-  const marca = typeof searchParams.marca === 'string' ? searchParams.marca : undefined;
-  const carroceria = typeof searchParams.carroceria === 'string' ? (searchParams.carroceria as any) : undefined;
-  const transmision = typeof searchParams.transmision === 'string' ? (searchParams.transmision as any) : undefined;
-  const combustible = typeof searchParams.combustible === 'string' ? (searchParams.combustible as any) : undefined;
+  const sp = await searchParams;
+
+  // Normalizar (un mismo filtro repetido en la URL llega como array)
+  const texto = (valor: string | string[] | undefined) =>
+    typeof valor === 'string' && valor !== '' ? valor : undefined;
+
+  const numero = (valor: string | string[] | undefined) => {
+    const bruto = texto(valor);
+    if (!bruto) return undefined;
+    const n = parseInt(bruto, 10);
+    return Number.isNaN(n) ? undefined : n;
+  };
 
   const filtros = {
-    marca,
-    carroceria,
-    transmision,
-    combustible,
-    precio_min: searchParams.precio_min
-      ? typeof searchParams.precio_min === 'string'
-        ? parseInt(searchParams.precio_min)
-        : undefined
-      : undefined,
-    precio_max: searchParams.precio_max
-      ? typeof searchParams.precio_max === 'string'
-        ? parseInt(searchParams.precio_max)
-        : undefined
-      : undefined,
-    anio_min: searchParams.anio_min
-      ? typeof searchParams.anio_min === 'string'
-        ? parseInt(searchParams.anio_min)
-        : undefined
-      : undefined,
-    anio_max: searchParams.anio_max
-      ? typeof searchParams.anio_max === 'string'
-        ? parseInt(searchParams.anio_max)
-        : undefined
-      : undefined,
-    q: typeof searchParams.q === 'string' ? searchParams.q : undefined,
+    marca: texto(sp.marca),
+    carroceria: texto(sp.carroceria) as FiltrosCatalogoTipo['carroceria'],
+    transmision: texto(sp.transmision) as FiltrosCatalogoTipo['transmision'],
+    combustible: texto(sp.combustible) as FiltrosCatalogoTipo['combustible'],
+    precio_min: numero(sp.precio_min),
+    precio_max: numero(sp.precio_max),
+    anio_min: numero(sp.anio_min),
+    anio_max: numero(sp.anio_max),
+    q: texto(sp.q),
   };
 
   const [vehiculos, marcas] = await Promise.all([
