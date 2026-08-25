@@ -30,7 +30,7 @@ export function SimuladorCuotas({ precioVehiculo, isOpen = true, onClose }: Simu
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl max-w-lg w-full p-8 space-y-6">
+      <div className="bg-background rounded-2xl shadow-2xl max-w-lg w-full p-8 space-y-6">
         {/* Header */}
         <div className="flex items-start justify-between">
           <div>

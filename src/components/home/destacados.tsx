@@ -9,7 +9,7 @@ export async function Destacados() {
   }
 
   return (
-    <section className="py-20 md:py-32 bg-white dark:bg-zinc-950">
+    <section className="py-20 md:py-32 bg-background">
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-4">

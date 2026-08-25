@@ -40,7 +40,7 @@ export default async function VehiculoPage({ params }: VehiculoPageProps) {
     return (
       <>
         <Navbar />
-        <main className="min-h-screen py-20 bg-white dark:bg-zinc-950">
+        <main className="min-h-screen py-20 bg-background">
           <div className="container mx-auto px-4 text-center">
             <h1 className="text-4xl font-bold mb-4">Vehículo no encontrado</h1>
             <p className="text-muted-foreground mb-8">
@@ -99,7 +99,7 @@ export default async function VehiculoPage({ params }: VehiculoPageProps) {
     <>
       <Navbar />
       {/* pb extra en mobile para que la barra fija no tape el contenido */}
-      <main className="min-h-screen py-8 md:py-14 pb-28 lg:pb-14 bg-white dark:bg-zinc-950">
+      <main className="min-h-screen py-8 md:py-14 pb-28 lg:pb-14 bg-background">
         <div className="container mx-auto px-4 max-w-6xl">
           <Link
             href="/catalogo"
@@ -121,7 +121,7 @@ export default async function VehiculoPage({ params }: VehiculoPageProps) {
                 </span>
               )}
             </div>
-            <h1 className="text-3xl md:text-5xl font-bold tracking-tight mb-2">{titulo}</h1>
+            <h1 className="text-4xl md:text-6xl font-semibold mb-3">{titulo}</h1>
             <p className="text-lg text-muted-foreground">
               {vehiculo.version && `${vehiculo.version} · `}
               {vehiculo.kilometraje.toLocaleString('es-CL')} km · {direccion}
@@ -142,7 +142,7 @@ export default async function VehiculoPage({ params }: VehiculoPageProps) {
                   va arriba, antes de la ficha técnica genérica. */}
               {vehiculo.caracteristicas && vehiculo.caracteristicas.length > 0 && (
                 <section>
-                  <h2 className="text-xl font-bold mb-4">Lo que destaca de este vehículo</h2>
+                  <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-4">Lo que destaca</h2>
                   <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {vehiculo.caracteristicas.map((caracteristica) => (
                       <li
@@ -159,7 +159,7 @@ export default async function VehiculoPage({ params }: VehiculoPageProps) {
 
               {vehiculo.descripcion && (
                 <section>
-                  <h2 className="text-xl font-bold mb-3">Descripción</h2>
+                  <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-3">Descripción</h2>
                   <p className="text-foreground leading-relaxed whitespace-pre-line">
                     {vehiculo.descripcion}
                   </p>
@@ -167,22 +167,22 @@ export default async function VehiculoPage({ params }: VehiculoPageProps) {
               )}
 
               <section>
-                <h2 className="text-xl font-bold mb-4">Ficha técnica</h2>
+                <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-4">Ficha técnica</h2>
                 <dl className="grid grid-cols-2 md:grid-cols-3 gap-px bg-border rounded-2xl overflow-hidden">
                   {especificaciones.map(({ icono: Icono, etiqueta, valor }) => (
-                    <div key={etiqueta} className="bg-white dark:bg-zinc-950 p-4">
+                    <div key={etiqueta} className="bg-background p-4">
                       <dt className="flex items-center gap-1.5 text-sm text-muted-foreground mb-1">
                         <Icono size={14} />
                         {etiqueta}
                       </dt>
-                      <dd className="text-lg font-semibold capitalize">{valor}</dd>
+                      <dd className="text-lg font-medium capitalize">{valor}</dd>
                     </div>
                   ))}
                 </dl>
               </section>
 
               <section>
-                <h2 className="text-xl font-bold mb-4">Dónde verlo</h2>
+                <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-4">Dónde verlo</h2>
                 <a
                   href={linkMapa(direccion)}
                   target="_blank"
@@ -207,7 +207,7 @@ export default async function VehiculoPage({ params }: VehiculoPageProps) {
             <aside className="space-y-5 lg:sticky lg:top-6 lg:self-start">
               <div className="border-2 border-primary rounded-2xl p-6 bg-primary/[0.03]">
                 <p className="text-sm text-muted-foreground mb-1">Precio</p>
-                <p className="text-4xl font-bold text-primary leading-none mb-2">
+                <p className="text-4xl font-semibold text-primary leading-none mb-2 tabular">
                   {formatCLP(vehiculo.precio)}
                 </p>
                 {ahorro > 0 && (
@@ -219,9 +219,9 @@ export default async function VehiculoPage({ params }: VehiculoPageProps) {
                   </p>
                 )}
 
-                <div className="bg-white dark:bg-zinc-900 border border-border p-4 rounded-xl mb-5">
+                <div className="bg-background border border-border p-4 rounded-xl mb-5">
                   <p className="text-xs text-muted-foreground mb-1">Cuota estimada (60 meses)</p>
-                  <p className="text-2xl font-bold">{formatCLP(Math.round(vehiculo.precio / 60))}/mes</p>
+                  <p className="text-2xl font-semibold tabular">{formatCLP(Math.round(vehiculo.precio / 60))}/mes</p>
                 </div>
 
                 <div className="space-y-3">
@@ -308,10 +308,10 @@ export default async function VehiculoPage({ params }: VehiculoPageProps) {
 
       {/* Barra fija en mobile: el panel de compra queda muy abajo al hacer scroll
           y ahí es donde se pierden las consultas desde el celular. */}
-      <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white dark:bg-zinc-950 border-t border-border px-4 py-3 flex items-center gap-3">
+      <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-background border-t border-border px-4 py-3 flex items-center gap-3">
         <div className="min-w-0">
           <p className="text-xs text-muted-foreground">Precio</p>
-          <p className="text-lg font-bold text-primary leading-tight truncate">
+          <p className="text-lg font-semibold text-primary leading-tight truncate tabular">
             {formatCLP(vehiculo.precio)}
           </p>
         </div>

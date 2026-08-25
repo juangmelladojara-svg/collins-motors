@@ -63,14 +63,14 @@ export function GaleriaCarousel({ marca, modelo, imageUrls = [] }: GaleriaCarous
           <>
             <button
               onClick={handlePrev}
-              className="absolute left-3 top-1/2 -translate-y-1/2 p-2 bg-white/80 dark:bg-zinc-900/80 rounded-lg hover:bg-white dark:hover:bg-zinc-800 transition md:opacity-0 md:group-hover:opacity-100"
+              className="absolute left-3 top-1/2 -translate-y-1/2 p-2 bg-background/85 rounded-lg hover:bg-background transition md:opacity-0 md:group-hover:opacity-100"
               aria-label="Foto anterior"
             >
               <ChevronLeft size={20} />
             </button>
             <button
               onClick={handleNext}
-              className="absolute right-3 top-1/2 -translate-y-1/2 p-2 bg-white/80 dark:bg-zinc-900/80 rounded-lg hover:bg-white dark:hover:bg-zinc-800 transition md:opacity-0 md:group-hover:opacity-100"
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-2 bg-background/85 rounded-lg hover:bg-background transition md:opacity-0 md:group-hover:opacity-100"
               aria-label="Foto siguiente"
             >
               <ChevronRight size={20} />

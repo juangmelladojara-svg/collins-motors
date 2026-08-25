@@ -60,7 +60,7 @@ export function ValorMarca() {
   }, []);
 
   return (
-    <section ref={containerRef} className="py-20 md:py-32 bg-gradient-to-br from-slate-900 to-slate-800 dark:from-slate-950 dark:to-black text-white">
+    <section ref={containerRef} className="py-20 md:py-32 bg-foreground text-background">
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">

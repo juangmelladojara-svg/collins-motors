@@ -3,41 +3,28 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import Link from 'next/link';
-import { ChevronRight } from 'lucide-react';
 import { BuscadorHero } from './buscador-hero';
-import { obtenerMarcas } from '@/lib/vehiculos/queries';
+import { formatCLP } from '@/lib/utils/formato';
+import type { Vehiculo } from '@/lib/vehiculos/tipos';
 
 interface HeroProps {
   marcas?: string[];
+  vehiculoPortada?: Vehiculo;
+  imagenPortada?: string;
 }
 
-export function Hero({ marcas = [] }: HeroProps) {
+export function Hero({ marcas = [], vehiculoPortada, imagenPortada }: HeroProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      if (!containerRef.current) return;
-
-      gsap.from('.hero-headline', {
+      // Una sola entrada escalonada y lenta. El movimiento caro es el que
+      // apenas se nota; varias animaciones compitiendo abaratan la página.
+      gsap.from('.hero-anim', {
         opacity: 0,
-        y: 30,
-        duration: 0.8,
-        ease: 'power3.out',
-      });
-
-      gsap.from('.hero-subtext', {
-        opacity: 0,
-        y: 20,
-        duration: 0.8,
-        delay: 0.2,
-        ease: 'power3.out',
-      });
-
-      gsap.from('.hero-buscador', {
-        opacity: 0,
-        y: 30,
-        duration: 0.8,
-        delay: 0.4,
+        y: 24,
+        duration: 1,
+        stagger: 0.12,
         ease: 'power3.out',
       });
     }, containerRef);
@@ -46,47 +33,67 @@ export function Hero({ marcas = [] }: HeroProps) {
   }, []);
 
   return (
-    <section
-      ref={containerRef}
-      className="relative min-h-[100dvh] flex items-center justify-center bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-950 dark:to-slate-900 overflow-hidden pt-20 md:pt-0"
-    >
-      {/* Decorative gradient blur */}
-      <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+    <section ref={containerRef} className="relative min-h-[92dvh] flex flex-col justify-end overflow-hidden">
+      {/* La foto es el fondo completo, no un accesorio en una columna. */}
+      {imagenPortada ? (
+        <>
+          <img
+            src={imagenPortada}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          {/* Scrim vertical: mantiene el texto legible sin apagar la foto. */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/25" />
+        </>
+      ) : (
+        <div className="absolute inset-0 bg-foreground" />
+      )}
 
-      <div className="container mx-auto px-4 relative z-10 max-w-5xl">
-        <div className="text-center space-y-8">
-          {/* Eyebrow / Badge */}
-          <div className="hero-badge inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-semibold tracking-wide">
-            Vehículos Usados de Calidad
-          </div>
-
-          {/* Headline */}
-          <h1 className="hero-headline text-5xl md:text-6xl font-bold leading-tight tracking-tight text-foreground">
-            Tu próximo auto está aquí
-          </h1>
-
-          {/* Subtext */}
-          <p className="hero-subtext text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Busca, compara y compra vehículos usados en Temuco. Con financiamiento disponible.
+      <div className="container mx-auto px-4 max-w-7xl relative z-10 pb-14 pt-32">
+        <div className="max-w-3xl">
+          <p className="hero-anim text-xs font-semibold uppercase tracking-[0.25em] text-white/60 mb-5">
+            Collins Motors · Temuco
           </p>
 
-          {/* Buscador mejorado */}
-          <div className="hero-buscador">
+          <h1 className="hero-anim text-5xl md:text-7xl lg:text-8xl font-semibold text-white mb-5">
+            Autos que valen
+            <br />
+            la vuelta.
+          </h1>
+
+          <p className="hero-anim text-lg text-white/70 max-w-lg mb-9">
+            Inventario revisado, precios a la vista y respuesta el mismo día.
+          </p>
+
+          <div className="hero-anim">
             <BuscadorHero marcas={marcas} />
           </div>
         </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-          <div className="flex flex-col items-center gap-2">
-            <span className="text-xs text-muted-foreground font-medium">Desplázate</span>
-            <svg className="w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-            </svg>
-          </div>
-        </div>
       </div>
+
+      {/* Crédito de la foto: el auto del hero es stock real y se puede visitar. */}
+      {vehiculoPortada && (
+        <Link
+          href={`/vehiculo/${vehiculoPortada.slug}`}
+          className="hero-anim relative z-10 border-t border-white/15 bg-black/25 backdrop-blur-sm hover:bg-black/40 transition"
+        >
+          <div className="container mx-auto px-4 max-w-7xl py-4 flex items-center justify-between gap-4">
+            <div className="min-w-0">
+              <p className="text-[11px] uppercase tracking-[0.2em] text-white/50 mb-0.5">
+                En vitrina
+              </p>
+              <p className="text-white font-medium truncate">
+                {vehiculoPortada.marca} {vehiculoPortada.modelo} {vehiculoPortada.anio}
+              </p>
+            </div>
+            <div className="text-right flex-shrink-0">
+              <p className="text-white font-semibold tabular">{formatCLP(vehiculoPortada.precio)}</p>
+              <p className="text-[11px] uppercase tracking-[0.2em] text-white/50">Ver ficha →</p>
+            </div>
+          </div>
+        </Link>
+      )}
     </section>
   );
 }
