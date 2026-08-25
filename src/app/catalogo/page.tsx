@@ -3,7 +3,7 @@ import { Navbar } from '@/components/layout/navbar';
 import { Footer } from '@/components/layout/footer';
 import { FiltrosCatalogo } from '@/components/catalogo/filtros-catalogo';
 import { TarjetaVehiculoMejorada } from '@/components/catalogo/tarjeta-vehiculo-mejorada';
-import { listarVehiculos, obtenerMarcas } from '@/lib/vehiculos/queries';
+import { listarVehiculos, obtenerMarcas, obtenerImagenesPrincipales } from '@/lib/vehiculos/queries';
 import type { FiltrosCatalogo as FiltrosCatalogoTipo } from '@/lib/vehiculos/tipos';
 
 export const dynamic = 'force-dynamic';
@@ -49,6 +49,9 @@ export default async function CatalogoPage({ searchParams }: CatalogoPageProps) 
     obtenerMarcas(),
   ]);
 
+  // Una sola consulta para las fotos de toda la grilla, no una por tarjeta.
+  const fotos = await obtenerImagenesPrincipales(vehiculos.map((v) => v.id));
+
   return (
     <>
       <Navbar />
@@ -74,7 +77,12 @@ export default async function CatalogoPage({ searchParams }: CatalogoPageProps) 
               {vehiculos.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {vehiculos.map((vehiculo) => (
-                    <TarjetaVehiculoMejorada key={vehiculo.id} vehiculo={vehiculo} />
+                    <TarjetaVehiculoMejorada
+                      key={vehiculo.id}
+                      vehiculo={vehiculo}
+                      imagenUrl={fotos[vehiculo.id]?.url}
+                      totalFotos={fotos[vehiculo.id]?.total ?? 0}
+                    />
                   ))}
                 </div>
               ) : (

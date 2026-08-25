@@ -10,9 +10,16 @@ import gsap from 'gsap';
 
 interface TarjetaVehiculoMejoradaProps {
   vehiculo: Vehiculo;
+  /** Foto principal ya resuelta por el catálogo, para no consultar por tarjeta. */
+  imagenUrl?: string;
+  totalFotos?: number;
 }
 
-export function TarjetaVehiculoMejorada({ vehiculo }: TarjetaVehiculoMejoradaProps) {
+export function TarjetaVehiculoMejorada({
+  vehiculo,
+  imagenUrl,
+  totalFotos = 0,
+}: TarjetaVehiculoMejoradaProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isLiked, setIsLiked] = useState(false);
 
@@ -63,12 +70,21 @@ export function TarjetaVehiculoMejorada({ vehiculo }: TarjetaVehiculoMejoradaPro
       >
         {/* Imagen */}
         <div className="relative h-48 md:h-56 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-zinc-800 dark:to-zinc-900 overflow-hidden">
-          <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">
-            <div className="flex flex-col items-center gap-2">
-              <ImageIcon size={32} className="opacity-50" />
-              <span className="text-xs">Foto de {vehiculo.marca} {vehiculo.modelo}</span>
+          {imagenUrl ? (
+            <img
+              src={imagenUrl}
+              alt={`${vehiculo.marca} ${vehiculo.modelo} ${vehiculo.anio}`}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">
+              <div className="flex flex-col items-center gap-2">
+                <ImageIcon size={32} className="opacity-50" />
+                <span className="text-xs">Sin fotos por ahora</span>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Badges superior izquierda */}
           <div className="absolute top-3 left-3 flex flex-col gap-2">
@@ -107,10 +123,12 @@ export function TarjetaVehiculoMejorada({ vehiculo }: TarjetaVehiculoMejoradaPro
           </button>
 
           {/* Contador de fotos */}
-          <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
-            <ImageIcon size={12} />
-            8 fotos
-          </div>
+          {totalFotos > 0 && (
+            <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+              <ImageIcon size={12} />
+              {totalFotos} {totalFotos === 1 ? 'foto' : 'fotos'}
+            </div>
+          )}
         </div>
 
         {/* Content */}

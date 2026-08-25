@@ -117,6 +117,53 @@ export async function obtenerImagenes(vehiculoId: string): Promise<string[]> {
   );
 }
 
+export interface ResumenFotos {
+  url: string;
+  total: number;
+}
+
+/**
+ * Foto principal y cantidad de fotos de varios vehículos, en una sola consulta.
+ * Se usa para la grilla del catálogo, donde una consulta por tarjeta sería N+1.
+ */
+export async function obtenerImagenesPrincipales(
+  vehiculoIds: string[]
+): Promise<Record<string, ResumenFotos>> {
+  if (USE_MOCK || vehiculoIds.length === 0) return {};
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from('vehiculo_imagenes')
+    .select('vehiculo_id, storage_path, orden, es_principal')
+    .in('vehiculo_id', vehiculoIds)
+    .order('es_principal', { ascending: false })
+    .order('orden', { ascending: true });
+
+  if (error) {
+    console.error('Error fetching main images:', error);
+    return {};
+  }
+
+  const resumen: Record<string, ResumenFotos> = {};
+
+  for (const fila of data as { vehiculo_id: string; storage_path: string }[]) {
+    const existente = resumen[fila.vehiculo_id];
+
+    if (existente) {
+      existente.total += 1;
+      continue;
+    }
+
+    // La primera fila de cada vehículo es su principal, por el orden del query.
+    resumen[fila.vehiculo_id] = {
+      url: supabase.storage.from('vehiculos').getPublicUrl(fila.storage_path).data.publicUrl,
+      total: 1,
+    };
+  }
+
+  return resumen;
+}
+
 export async function obtenerDestacados(): Promise<Vehiculo[]> {
   // Fallback a mock data
   if (USE_MOCK) {
