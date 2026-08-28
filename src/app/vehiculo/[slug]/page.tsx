@@ -1,3 +1,5 @@
+import type { Metadata } from 'next';
+import { SITE_NAME } from '@/lib/site';
 import { Navbar } from '@/components/layout/navbar';
 import { Footer } from '@/components/layout/footer';
 import { GaleriaCarousel } from '@/components/catalogo/galeria-carousel';
@@ -30,6 +32,55 @@ export const dynamic = 'force-dynamic';
 interface VehiculoPageProps {
   // En Next 16 params es asíncrono: hay que await antes de leerlo.
   params: Promise<{ slug: string }>;
+}
+
+/**
+ * Sin esto, compartir un auto por WhatsApp mandaba un link pelado: sin foto,
+ * sin precio, sin nada. La ficha compartible es el principal canal de difusión
+ * del negocio, así que el preview importa tanto como la página.
+ */
+export async function generateMetadata({ params }: VehiculoPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const vehiculo = await obtenerPorSlug(slug);
+
+  if (!vehiculo) {
+    return { title: `Vehículo no encontrado | ${SITE_NAME}` };
+  }
+
+  const nombre = `${vehiculo.marca} ${vehiculo.modelo} ${vehiculo.anio}`;
+  const precio = formatCLP(vehiculo.precio);
+  const titular = `${nombre} — ${precio}`;
+
+  const ficha = [
+    vehiculo.version,
+    `${vehiculo.kilometraje.toLocaleString('es-CL')} km`,
+    vehiculo.transmision === 'automatica' ? 'Automático' : 'Manual',
+    precio,
+  ]
+    .filter(Boolean)
+    .join(' · ');
+
+  const descripcion = `${ficha}. Disponible en ${SITE_NAME}, ${vehiculo.ubicacion || 'Temuco'}.`;
+
+  const fotos = await obtenerImagenes(vehiculo.id);
+  const ruta = `/vehiculo/${vehiculo.slug}`;
+
+  return {
+    title: `${titular} | ${SITE_NAME}`,
+    description: descripcion,
+    alternates: { canonical: ruta },
+    openGraph: {
+      title: titular,
+      description: descripcion,
+      url: ruta,
+      images: fotos.length > 0 ? [{ url: fotos[0], alt: nombre }] : undefined,
+    },
+    twitter: {
+      title: titular,
+      description: descripcion,
+      images: fotos.length > 0 ? [fotos[0]] : undefined,
+    },
+  };
 }
 
 export default async function VehiculoPage({ params }: VehiculoPageProps) {

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import { SITE_URL, SITE_NAME } from "@/lib/site";
 
 // Outfit para titulares y precios: geométrica y firme, con buen peso alto.
 const display = Outfit({
@@ -21,8 +22,14 @@ const sans = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "Collins Motors — Vehículos Usados en Temuco",
   description: "Encuentra tu próximo vehículo en Collins Motors. Amplio inventario de autos usados con financiamiento disponible.",
-  metadataBase: new URL("https://collinsmotors.cl"),
+  metadataBase: new URL(SITE_URL),
   robots: { index: true, follow: true },
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    locale: "es_CL",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({

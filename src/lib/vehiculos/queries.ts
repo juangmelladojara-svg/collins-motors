@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import type { Vehiculo, FiltrosCatalogo } from './tipos';
 import { createClient } from '@/lib/supabase/server';
 import { VEHICULOS_MOCK } from './datos-mock';
@@ -5,7 +6,7 @@ import { VEHICULOS_MOCK } from './datos-mock';
 // Usar mock data en desarrollo local, Supabase en producción
 const USE_MOCK = process.env.NODE_ENV === 'development' && !process.env.NEXT_PUBLIC_SUPABASE_URL;
 
-export async function listarVehiculos(filtros?: FiltrosCatalogo): Promise<Vehiculo[]> {
+export const listarVehiculos = cache(async (filtros?: FiltrosCatalogo): Promise<Vehiculo[]> => {
   // Fallback a mock data si Supabase no está configurado
   if (USE_MOCK) {
     return listarVehiculosMock(filtros);
@@ -73,9 +74,9 @@ export async function listarVehiculos(filtros?: FiltrosCatalogo): Promise<Vehicu
   }
 
   return data as Vehiculo[];
-}
+});
 
-export async function obtenerPorSlug(slug: string): Promise<Vehiculo | null> {
+export const obtenerPorSlug = cache(async (slug: string): Promise<Vehiculo | null> => {
   // Fallback a mock data
   if (USE_MOCK) {
     return VEHICULOS_MOCK.find((v) => v.slug === slug) || null;
@@ -94,10 +95,10 @@ export async function obtenerPorSlug(slug: string): Promise<Vehiculo | null> {
   }
 
   return data as Vehiculo;
-}
+});
 
 /** URLs públicas de las fotos de un vehículo, en el orden definido por el admin. */
-export async function obtenerImagenes(vehiculoId: string): Promise<string[]> {
+export const obtenerImagenes = cache(async (vehiculoId: string): Promise<string[]> => {
   if (USE_MOCK) return [];
 
   const supabase = await createClient();
@@ -115,7 +116,7 @@ export async function obtenerImagenes(vehiculoId: string): Promise<string[]> {
   return (data as { storage_path: string }[]).map(
     ({ storage_path }) => supabase.storage.from('vehiculos').getPublicUrl(storage_path).data.publicUrl
   );
-}
+});
 
 export interface ResumenFotos {
   url: string;

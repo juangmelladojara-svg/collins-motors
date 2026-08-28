@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { Vehiculo } from '@/lib/vehiculos/tipos';
-import { LogOut, Plus, Edit2, Trash2, Eye, EyeOff } from 'lucide-react';
+import { LogOut, Plus, Edit2, Trash2, Eye, EyeOff, Star } from 'lucide-react';
 import Link from 'next/link';
 
 export default function AdminDashboard() {
@@ -60,6 +60,20 @@ export default function AdminDashboard() {
 
     if (error) {
       setError(`No se pudo cambiar la publicación: ${error.message}`);
+      return;
+    }
+
+    setError('');
+    fetchVehiculos();
+  };
+
+  // Los vehículos destacados son los que aparecen en la portada. No había
+  // ninguna forma de marcarlos: el alta los creaba siempre en false.
+  const handleToggleDestacado = async (id: string, destacado: boolean) => {
+    const { error } = await supabase.from('vehiculos').update({ destacado: !destacado }).eq('id', id);
+
+    if (error) {
+      setError(`No se pudo cambiar el destacado: ${error.message}`);
       return;
     }
 
@@ -148,6 +162,7 @@ export default function AdminDashboard() {
                   <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Precio</th>
                   <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Estado</th>
                   <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Publicado</th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Portada</th>
                   <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Acciones</th>
                 </tr>
               </thead>
@@ -189,6 +204,21 @@ export default function AdminDashboard() {
                       >
                         {v.publicado ? <Eye size={16} /> : <EyeOff size={16} />}
                         {v.publicado ? 'Publicado' : 'Borrador'}
+                      </button>
+                    </td>
+                    <td className="px-6 py-4">
+                      <button
+                        onClick={() => handleToggleDestacado(v.id, v.destacado)}
+                        title={v.destacado ? 'Quitar de la portada' : 'Mostrar en la portada'}
+                        aria-pressed={v.destacado}
+                        className={`flex items-center gap-2 px-3 py-1 rounded-lg text-sm font-bold ${
+                          v.destacado
+                            ? 'bg-amber-100 text-amber-700 hover:bg-amber-200'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                      >
+                        <Star size={16} fill={v.destacado ? 'currentColor' : 'none'} />
+                        {v.destacado ? 'En portada' : 'No'}
                       </button>
                     </td>
                     <td className="px-6 py-4">
