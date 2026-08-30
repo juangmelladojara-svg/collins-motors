@@ -3,8 +3,9 @@
 import { Vehiculo } from '@/lib/vehiculos/tipos';
 import { formatCLP, calcularDescuento } from '@/lib/utils/formato';
 import { linkWhatsApp } from '@/lib/contacto';
+import { imagenReferencial } from '@/lib/vehiculos/imagen-referencial';
 import Link from 'next/link';
-import { Image as ImageIcon, MessageCircle } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 
 interface TarjetaVehiculoMejoradaProps {
   vehiculo: Vehiculo;
@@ -22,6 +23,11 @@ export function TarjetaVehiculoMejorada({
     ? calcularDescuento(vehiculo.precio_anterior, vehiculo.precio)
     : null;
 
+  // Mientras no haya fotos reales, una pieza de diseño con la identidad del
+  // auto: mantiene la grilla pareja en vez de dejar huecos grises.
+  const foto = imagenUrl ?? imagenReferencial(vehiculo);
+  const esReferencial = !imagenUrl;
+
   // Una línea sobria en vez de cuatro filas de iconos rojos. El acento se
   // reserva para acciones; si tiñe cada icono deja de significar algo.
   const specs = [
@@ -38,19 +44,16 @@ export function TarjetaVehiculoMejorada({
         href={`/vehiculo/${vehiculo.slug}`}
         className="relative aspect-[16/10] bg-muted rounded-xl overflow-hidden block"
       >
-        {imagenUrl ? (
-          <img
-            src={imagenUrl}
-            alt={`${vehiculo.marca} ${vehiculo.modelo} ${vehiculo.anio}`}
-            className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-[900ms] ease-out"
-            loading="lazy"
-          />
-        ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-muted-foreground">
-            <ImageIcon size={28} className="opacity-40" />
-            <span className="text-xs">Sin fotos por ahora</span>
-          </div>
-        )}
+        <img
+          src={foto}
+          alt={
+            esReferencial
+              ? `${vehiculo.marca} ${vehiculo.modelo} ${vehiculo.anio} — fotos próximamente`
+              : `${vehiculo.marca} ${vehiculo.modelo} ${vehiculo.anio}`
+          }
+          className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-[900ms] ease-out"
+          loading="lazy"
+        />
 
         {(vehiculo.estado !== 'disponible' || descuento) && (
           <div className="absolute top-3 left-3 flex gap-2">

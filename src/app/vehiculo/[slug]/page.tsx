@@ -5,7 +5,7 @@ import { Footer } from '@/components/layout/footer';
 import { GaleriaCarousel } from '@/components/catalogo/galeria-carousel';
 import { SimuladorCuotas } from '@/components/catalogo/simulador-cuotas';
 import { obtenerPorSlug, obtenerImagenes } from '@/lib/vehiculos/queries';
-import { getImagenesDemo } from '@/lib/vehiculos/imagenes-demo';
+import { imagenReferencial } from '@/lib/vehiculos/imagen-referencial';
 import { formatCLP } from '@/lib/utils/formato';
 import { CONTACTO, linkWhatsApp, linkMapa } from '@/lib/contacto';
 import {
@@ -113,7 +113,7 @@ export default async function VehiculoPage({ params }: VehiculoPageProps) {
   // Fotos reales cargadas por el admin; los SVG de demo solo cubren los
   // vehículos de ejemplo que todavía no tienen imágenes.
   const imagenesReales = await obtenerImagenes(vehiculo.id);
-  const imagenes = imagenesReales.length > 0 ? imagenesReales : getImagenesDemo(vehiculo.slug);
+  const imagenes = imagenesReales.length > 0 ? imagenesReales : [imagenReferencial(vehiculo)];
 
   const titulo = `${vehiculo.marca} ${vehiculo.modelo} ${vehiculo.anio}`;
   const ahorro =
