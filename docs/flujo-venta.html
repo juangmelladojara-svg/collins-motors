@@ -1,0 +1,382 @@
+<title>Del clic a la venta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+
+<style>
+  /* Paleta heredada del propio sitio de Collins Motors: un solo acento rojo y
+     neutros cálidos. El documento pertenece a la marca, no a una plantilla. */
+  :root {
+    --paper: #ffffff;
+    --surface: #faf9f8;
+    --ink: #12100f;
+    --muted-ink: #6b6763;
+    --line: #e7e5e2;
+    --line-soft: #f0eeec;
+    --accent: #c2202e;
+    --ok: #2f6b4f;
+
+    --display: "Outfit", "Segoe UI", system-ui, sans-serif;
+    --body: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #0c0b0a;
+      --surface: #141312;
+      --ink: #ede9e6;
+      --muted-ink: #9c9691;
+      --line: #292725;
+      --line-soft: #1c1b1a;
+      --accent: #ef3b47;
+      --ok: #5aa37c;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper: #0c0b0a;
+    --surface: #141312;
+    --ink: #ede9e6;
+    --muted-ink: #9c9691;
+    --line: #292725;
+    --line-soft: #1c1b1a;
+    --accent: #ef3b47;
+    --ok: #5aa37c;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    line-height: 1.65;
+    margin: 0;
+    padding: 0 1.5rem 6rem;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 44rem; margin: 0 auto; }
+
+  h1, h2, h3 {
+    font-family: var(--display);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  .eyebrow {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted-ink);
+    margin: 0;
+  }
+
+  header.masthead {
+    padding: 4.5rem 0 2.5rem;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+  header.masthead h1 { font-size: clamp(2.4rem, 7vw, 3.6rem); font-weight: 600; }
+  header.masthead .lede { font-size: 1.12rem; color: var(--muted-ink); margin: 0; max-width: 34rem; }
+  .stamp { font-size: 0.78rem; color: var(--muted-ink); font-variant-numeric: tabular-nums; margin: 0; }
+
+  section { padding-top: 3.5rem; display: flex; flex-direction: column; gap: 1.4rem; }
+  section > h2 { font-size: 1.7rem; font-weight: 600; }
+  p { margin: 0; }
+  .note { color: var(--muted-ink); }
+
+  /* Espina numerada: la venta es una secuencia real, el orden es informacion. */
+  ol.spine { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+
+  ol.spine > li {
+    display: grid;
+    grid-template-columns: 2.6rem 1fr;
+    column-gap: 1.1rem;
+    padding-bottom: 1.9rem;
+    position: relative;
+  }
+  ol.spine > li::before {
+    content: "";
+    position: absolute;
+    left: 1.05rem;
+    top: 2.2rem;
+    bottom: 0;
+    width: 1px;
+    background: var(--line);
+  }
+  ol.spine > li:last-child { padding-bottom: 0; }
+  ol.spine > li:last-child::before { display: none; }
+
+  .marker {
+    width: 2.15rem; height: 2.15rem;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    display: grid; place-items: center;
+    font-family: var(--display);
+    font-size: 0.9rem; font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    background: var(--paper);
+    color: var(--muted-ink);
+    position: relative; z-index: 1;
+  }
+  li.break .marker { border-color: var(--accent); color: var(--accent); }
+
+  .step-body { display: flex; flex-direction: column; gap: 0.35rem; padding-top: 0.15rem; }
+  .step-body h3 { font-size: 1.08rem; font-weight: 600; }
+  .step-body p { font-size: 0.97rem; color: var(--muted-ink); }
+  .step-body p strong { color: var(--ink); font-weight: 600; }
+  li.break .step-body h3 { color: var(--accent); }
+
+  .quote {
+    font-size: 0.92rem;
+    background: var(--surface);
+    border-left: 2px solid var(--line);
+    padding: 0.6rem 0.9rem;
+    margin-top: 0.3rem;
+  }
+
+  .gap {
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    background: var(--surface);
+    padding: 1.4rem 1.5rem;
+    display: flex; flex-direction: column; gap: 0.6rem;
+  }
+  .gap.solved { border-left-color: var(--ok); }
+  .gap h3 { font-size: 1.05rem; font-weight: 600; }
+  .gap p { font-size: 0.95rem; color: var(--muted-ink); }
+  .tag {
+    align-self: flex-start;
+    font-size: 0.66rem; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    padding: 0.2rem 0.55rem;
+    border-radius: 3px;
+    background: var(--accent); color: #ffffff;
+  }
+  .gap.solved .tag { background: var(--ok); }
+
+  .tier {
+    border-top: 1px solid var(--line);
+    padding-top: 1.3rem;
+    display: grid;
+    grid-template-columns: 7.5rem 1fr;
+    column-gap: 1.5rem;
+    row-gap: 0.5rem;
+  }
+  @media (max-width: 34rem) { .tier { grid-template-columns: 1fr; } }
+  .tier .lvl { display: flex; flex-direction: column; gap: 0.3rem; }
+  .tier .lvl .n { font-family: var(--display); font-size: 1.5rem; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+  .tier .lvl .state {
+    font-size: 0.64rem; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--muted-ink);
+  }
+  .tier .lvl .state.live { color: var(--ok); }
+  .tier .content { display: flex; flex-direction: column; gap: 0.5rem; }
+  .tier h3 { font-size: 1.08rem; font-weight: 600; }
+  .tier p { font-size: 0.95rem; color: var(--muted-ink); }
+  .tier .answers {
+    font-size: 0.9rem;
+    padding: 0.55rem 0.85rem;
+    background: var(--surface);
+    border: 1px solid var(--line-soft);
+    color: var(--ink);
+  }
+  .tier .answers strong { font-weight: 600; }
+
+  .scroller { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.93rem; min-width: 30rem; }
+  th, td { text-align: left; padding: 0.7rem 0.9rem 0.7rem 0; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  th {
+    font-size: 0.66rem; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--muted-ink);
+    border-bottom: 1px solid var(--line);
+  }
+  td.metric { font-weight: 600; white-space: nowrap; }
+  td.why { color: var(--muted-ink); }
+
+  ol.order { margin: 0; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.97rem; }
+  ol.order strong { font-weight: 600; }
+  ol.order span { color: var(--muted-ink); }
+
+  footer {
+    margin-top: 4rem; padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.83rem; color: var(--muted-ink);
+  }
+
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">Collins Motors &middot; Temuco</p>
+    <h1>Del clic a la venta</h1>
+    <p class="lede">Cómo recorre un comprador el sitio hasta cerrar, dónde el sistema deja de verlo, y qué conviene medir.</p>
+    <p class="stamp">30 de agosto de 2026</p>
+  </header>
+
+  <section>
+    <h2>El recorrido</h2>
+
+    <ol class="spine">
+      <li>
+        <span class="marker">1</span>
+        <div class="step-body">
+          <h3>Llega</h3>
+          <p>Por cuatro puertas: la portada, el catálogo, un link de ficha que alguien le reenvió por WhatsApp, o una búsqueda en Google.</p>
+        </div>
+      </li>
+
+      <li>
+        <span class="marker">2</span>
+        <div class="step-body">
+          <h3>Busca</h3>
+          <p>Filtra por marca, carrocería, transmisión, combustible, precio y año, o usa los atajos de un toque. Cada combinación queda guardada en la dirección, así que un filtro se puede compartir tal cual.</p>
+        </div>
+      </li>
+
+      <li>
+        <span class="marker">3</span>
+        <div class="step-body">
+          <h3>Abre la ficha</h3>
+          <p>Es el momento de decisión: fotos, lo que destaca del vehículo, ficha técnica, formas de pago, el vendedor a cargo, la dirección con mapa, y el precio con el ahorro si hubo rebaja.</p>
+        </div>
+      </li>
+
+      <li>
+        <span class="marker">4</span>
+        <div class="step-body">
+          <h3>Aprieta &laquo;Cotiza ahora&raquo;</h3>
+          <p>Se abre WhatsApp con el mensaje ya escrito, dirigido al <strong>vendedor asignado a ese auto</strong>, no a un número general.</p>
+          <p class="quote">Hola Patricio, vi el BMW 120i 2017 en la web de Collins Motors ($16.490.000) y quiero cotizarlo.</p>
+        </div>
+      </li>
+
+      <li class="break">
+        <span class="marker">5</span>
+        <div class="step-body">
+          <h3>El sitio deja de ver</h3>
+          <p>La conversación pasa al teléfono del vendedor. Negociación, prueba de manejo, financiamiento y firma ocurren fuera del sistema, que es como corresponde: así se vende un auto.</p>
+        </div>
+      </li>
+
+      <li>
+        <span class="marker">6</span>
+        <div class="step-body">
+          <h3>Se cierra la venta</h3>
+          <p>El encargado marca el vehículo como <strong>Vendido</strong> en el panel. La ficha no se borra: sigue abriendo para quien tenga el link, con el cartel puesto y una salida hacia el resto del stock. El catálogo lo retira solo.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Dónde se cortaba</h2>
+
+    <div class="gap solved">
+      <span class="tag">Resuelto</span>
+      <h3>No había forma de cerrar la venta</h3>
+      <p>El estado del vehículo existía en la base y se mostraba en el panel, pero no se podía cambiar. Vender un auto obligaba a borrarlo, perdiendo el registro y rompiendo todo link en circulación, o a despublicarlo, que rompe esos links igual. Ahora el estado es un selector, y una ficha vendida ofrece otros autos de la misma marca en vez de invitar a cotizar algo que ya no está.</p>
+    </div>
+
+    <div class="gap">
+      <span class="tag">Abierto</span>
+      <h3>Los contactos viven en un solo teléfono</h3>
+      <p>WhatsApp es hoy el único canal. Quien prefiera escribir, o entre de madrugada, se pierde: el formulario de contacto todavía no envía nada, aunque la base ya tiene la tabla lista esperándolo. Y todos los contactos quedan en el teléfono personal del vendedor, así que si él no está, nadie más los ve.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Qué medir</h2>
+    <p class="note">Tres niveles, de menor a mayor esfuerzo. El primero ya está funcionando.</p>
+
+    <div class="tier">
+      <div class="lvl">
+        <span class="n">01</span>
+        <span class="state live">Activo</span>
+      </div>
+      <div class="content">
+        <h3>Visitas y consultas</h3>
+        <p>Analítica del sitio, más un registro cada vez que alguien aprieta el botón de WhatsApp, que guarda qué vehículo era, su precio y desde dónde se hizo clic. Es el último punto que el sitio alcanza a ver antes de que la conversación se vaya al teléfono.</p>
+        <p class="answers"><strong>Responde:</strong> cuánta gente entra, de dónde llega, y qué autos generan consultas.</p>
+      </div>
+    </div>
+
+    <div class="tier">
+      <div class="lvl">
+        <span class="n">02</span>
+        <span class="state">Propuesto</span>
+      </div>
+      <div class="content">
+        <h3>Vistas y consultas por auto, en el panel</h3>
+        <p>Un contador junto a cada vehículo del panel: 142 vistas, 6 consultas. El encargado ve sin salir de ahí qué auto llama la atención y cuál lleva tres semanas sin que nadie lo abra.</p>
+        <p class="answers"><strong>Responde:</strong> qué destacar en la portada y qué precio conviene mover.</p>
+      </div>
+    </div>
+
+    <div class="tier">
+      <div class="lvl">
+        <span class="n">03</span>
+        <span class="state">Propuesto</span>
+      </div>
+      <div class="content">
+        <h3>De dónde vienen las ventas</h3>
+        <p>Search Console para saber qué se busca antes de llegar, marcas en los enlaces que se publiquen en Marketplace e Instagram, y una pregunta al cerrar: cómo nos encontraste. Sin esto, invertir en publicidad es a ciegas.</p>
+        <p class="answers"><strong>Responde:</strong> qué canal trae compradores reales, no solo visitas.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Los cuatro números</h2>
+    <div class="scroller">
+      <table>
+        <thead>
+          <tr><th scope="col">Indicador</th><th scope="col">Por qué importa</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="metric">Fichas abiertas</td>
+            <td class="why">Mide si la búsqueda funciona. Mucha visita y pocas fichas abiertas significa que no encuentran lo que buscan.</td>
+          </tr>
+          <tr>
+            <td class="metric">Consultas por WhatsApp</td>
+            <td class="why">El único indicador de intención real que el sitio alcanza a registrar.</td>
+          </tr>
+          <tr>
+            <td class="metric">Ficha a consulta</td>
+            <td class="why">De cada cien que abren un auto, cuántos escriben. Es el número que dice si la ficha convence.</td>
+          </tr>
+          <tr>
+            <td class="metric">Días hasta vender</td>
+            <td class="why">Con la fecha de publicación y la de venta sale solo, y muestra qué stock se estanca.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Orden sugerido</h2>
+    <ol class="order">
+      <li><strong>Cargar el stock real con fotos.</strong> <span>Sin autos de verdad, ninguna métrica dice nada.</span></li>
+      <li><strong>Dejar correr dos semanas.</strong> <span>El nivel 01 ya registra, pero hay que darle tiempo antes de leerlo.</span></li>
+      <li><strong>Contadores en el panel.</strong> <span>Es lo que convierte los datos en decisiones diarias del encargado.</span></li>
+      <li><strong>Conectar el formulario de contacto.</strong> <span>Abre el segundo canal y deja de depender de un teléfono.</span></li>
+      <li><strong>Atribución y campañas.</strong> <span>Recién cuando haya volumen que valga la pena repartir.</span></li>
+    </ol>
+  </section>
+
+  <footer>
+    Documento de trabajo &middot; Collins Motors &middot; Refleja el estado del sitio al 30 de agosto de 2026.
+  </footer>
+
+</div>
