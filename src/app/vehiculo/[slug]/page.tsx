@@ -26,6 +26,7 @@ import {
   TrendingDown,
 } from 'lucide-react';
 import Link from 'next/link';
+import { BotonWhatsApp } from '@/components/analitica/boton-whatsapp';
 
 export const dynamic = 'force-dynamic';
 
@@ -128,6 +129,7 @@ export default async function VehiculoPage({ params }: VehiculoPageProps) {
     vehiculo.vendedor_telefono
   );
 
+  const vendido = vehiculo.estado === 'vendido';
   const direccion = vehiculo.ubicacion || CONTACTO.direccion;
 
   const especificaciones = [
@@ -276,20 +278,46 @@ export default async function VehiculoPage({ params }: VehiculoPageProps) {
                 </div>
 
                 <div className="space-y-3">
-                  <a
-                    href={whatsapp}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-primary text-white font-bold text-lg rounded-xl hover:bg-primary-hover active:scale-[0.98] transition shadow-lg shadow-primary/20"
-                  >
-                    <MessageCircle size={20} />
-                    ¡COTIZA AHORA!
-                  </a>
-                  <p className="text-xs text-center text-muted-foreground">
-                    Te respondemos por WhatsApp en minutos
-                  </p>
+                  {vendido ? (
+                    // El link sigue vivo para quien lo recibió por WhatsApp hace
+                    // semanas, pero mandarlo a cotizar algo ya vendido es peor
+                    // que no responder: se le ofrece el resto del stock.
+                    <>
+                      <p className="text-sm text-muted-foreground text-center py-2">
+                        Este vehículo ya fue vendido.
+                      </p>
+                      <Link
+                        href={`/catalogo?marca=${encodeURIComponent(vehiculo.marca)}`}
+                        className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-primary text-white font-bold text-lg rounded-xl hover:bg-primary-hover active:scale-[0.98] transition"
+                      >
+                        Ver otros {vehiculo.marca}
+                      </Link>
+                      <Link
+                        href="/catalogo"
+                        className="w-full flex items-center justify-center px-6 py-3 border-2 border-primary text-primary font-semibold rounded-xl hover:bg-primary hover:text-white transition"
+                      >
+                        Ver todo el catálogo
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <BotonWhatsApp
+                        href={whatsapp}
+                        vehiculo={titulo}
+                        precio={vehiculo.precio}
+                        origen="ficha"
+                        className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-primary text-white font-bold text-lg rounded-xl hover:bg-primary-hover active:scale-[0.98] transition shadow-lg shadow-primary/20"
+                      >
+                        <MessageCircle size={20} />
+                        {vehiculo.estado === 'reservado' ? 'CONSULTAR DISPONIBILIDAD' : '¡COTIZA AHORA!'}
+                      </BotonWhatsApp>
+                      <p className="text-xs text-center text-muted-foreground">
+                        Te respondemos por WhatsApp en minutos
+                      </p>
 
-                  <SimuladorCuotas precioVehiculo={vehiculo.precio} isOpen={false} />
+                      <SimuladorCuotas precioVehiculo={vehiculo.precio} isOpen={false} />
+                    </>
+                  )}
                 </div>
               </div>
 
@@ -366,15 +394,25 @@ export default async function VehiculoPage({ params }: VehiculoPageProps) {
             {formatCLP(vehiculo.precio)}
           </p>
         </div>
-        <a
-          href={whatsapp}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-primary text-white font-bold rounded-xl active:scale-[0.98] transition"
-        >
-          <MessageCircle size={18} />
-          ¡COTIZA AHORA!
-        </a>
+        {vendido ? (
+          <Link
+            href="/catalogo"
+            className="flex-1 flex items-center justify-center px-4 py-3 bg-primary text-white font-bold rounded-xl active:scale-[0.98] transition"
+          >
+            Ver catálogo
+          </Link>
+        ) : (
+          <BotonWhatsApp
+            href={whatsapp}
+            vehiculo={titulo}
+            precio={vehiculo.precio}
+            origen="ficha-mobile"
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-primary text-white font-bold rounded-xl active:scale-[0.98] transition"
+          >
+            <MessageCircle size={18} />
+            {vehiculo.estado === 'reservado' ? 'CONSULTAR' : '¡COTIZA AHORA!'}
+          </BotonWhatsApp>
+        )}
       </div>
 
       <Footer />

@@ -81,6 +81,21 @@ export default function AdminDashboard() {
     fetchVehiculos();
   };
 
+  // Vender un auto no debe borrar su ficha: el link que circula por WhatsApp
+  // tiene que seguir abriendo y mostrar el cartel "Vendido". El catálogo ya
+  // filtra por estado, así que basta con poder cambiarlo.
+  const handleEstado = async (id: string, estado: string) => {
+    const { error } = await supabase.from('vehiculos').update({ estado }).eq('id', id);
+
+    if (error) {
+      setError(`No se pudo cambiar el estado: ${error.message}`);
+      return;
+    }
+
+    setError('');
+    fetchVehiculos();
+  };
+
   const handleDelete = async (id: string) => {
     if (!confirm('¿Estás seguro de que deseas eliminar este vehículo?')) return;
 
@@ -181,8 +196,11 @@ export default function AdminDashboard() {
                       <p className="font-bold text-gray-900">${v.precio.toLocaleString()}</p>
                     </td>
                     <td className="px-6 py-4">
-                      <span
-                        className={`px-3 py-1 rounded-full text-sm font-bold ${
+                      <select
+                        value={v.estado}
+                        onChange={(e) => handleEstado(v.id, e.target.value)}
+                        aria-label={`Estado de ${v.marca} ${v.modelo}`}
+                        className={`px-3 py-1.5 rounded-lg text-sm font-bold border-0 cursor-pointer focus:ring-2 focus:ring-blue-500 outline-none ${
                           v.estado === 'disponible'
                             ? 'bg-green-100 text-green-800'
                             : v.estado === 'reservado'
@@ -190,8 +208,10 @@ export default function AdminDashboard() {
                               : 'bg-red-100 text-red-800'
                         }`}
                       >
-                        {v.estado}
-                      </span>
+                        <option value="disponible">Disponible</option>
+                        <option value="reservado">Reservado</option>
+                        <option value="vendido">Vendido</option>
+                      </select>
                     </td>
                     <td className="px-6 py-4">
                       <button

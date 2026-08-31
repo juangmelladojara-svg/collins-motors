@@ -6,6 +6,7 @@ import { linkWhatsApp } from '@/lib/contacto';
 import { imagenReferencial } from '@/lib/vehiculos/imagen-referencial';
 import Link from 'next/link';
 import { MessageCircle } from 'lucide-react';
+import { BotonWhatsApp } from '@/components/analitica/boton-whatsapp';
 
 interface TarjetaVehiculoMejoradaProps {
   vehiculo: Vehiculo;
@@ -90,18 +91,19 @@ export function TarjetaVehiculoMejorada({
             </Link>
           </h3>
 
-          <a
+          <BotonWhatsApp
             href={linkWhatsApp(
               `Hola, me interesa el ${vehiculo.marca} ${vehiculo.modelo} ${vehiculo.anio} que vi en la web de Collins Motors.`,
               vehiculo.vendedor_telefono
             )}
-            target="_blank"
-            rel="noopener noreferrer"
+            vehiculo={`${vehiculo.marca} ${vehiculo.modelo} ${vehiculo.anio}`}
+            precio={vehiculo.precio}
+            origen="catalogo"
             aria-label={`Consultar por ${vehiculo.marca} ${vehiculo.modelo} por WhatsApp`}
             className="flex-shrink-0 p-2 -m-1 rounded-lg text-muted-foreground hover:text-primary hover:bg-muted transition"
           >
             <MessageCircle size={19} />
-          </a>
+          </BotonWhatsApp>
         </div>
 
         {vehiculo.version && (

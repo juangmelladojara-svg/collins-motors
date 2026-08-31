@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { SITE_URL, SITE_NAME } from "@/lib/site";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 // Outfit para titulares y precios: geométrica y firme, con buen peso alto.
 const display = Outfit({
@@ -49,6 +51,8 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen flex flex-col bg-background text-foreground">
         {children}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
