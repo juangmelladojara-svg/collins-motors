@@ -1,0 +1,427 @@
+<title>Cómo nos encuentran</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap">
+
+<style>
+  :root {
+    --paper: #ffffff;
+    --surface: #faf9f8;
+    --sunk: #f2f0ee;
+    --ink: #12100f;
+    --muted-ink: #6b6763;
+    --line: #e7e5e2;
+    --line-soft: #f0eeec;
+    --accent: #c2202e;
+    --ok: #2f6b4f;
+
+    --display: "Outfit", "Segoe UI", system-ui, sans-serif;
+    --body: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, "Cascadia Code", monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #0c0b0a;
+      --surface: #141312;
+      --sunk: #1b1a18;
+      --ink: #ede9e6;
+      --muted-ink: #9c9691;
+      --line: #292725;
+      --line-soft: #1c1b1a;
+      --accent: #ef3b47;
+      --ok: #5aa37c;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper: #0c0b0a;
+    --surface: #141312;
+    --sunk: #1b1a18;
+    --ink: #ede9e6;
+    --muted-ink: #9c9691;
+    --line: #292725;
+    --line-soft: #1c1b1a;
+    --accent: #ef3b47;
+    --ok: #5aa37c;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    line-height: 1.65;
+    margin: 0;
+    padding: 0 1.5rem 6rem;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 46rem; margin: 0 auto; }
+
+  h1, h2, h3 {
+    font-family: var(--display);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  .eyebrow {
+    font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--muted-ink); margin: 0;
+  }
+
+  header.masthead {
+    padding: 4.5rem 0 2.5rem;
+    border-bottom: 1px solid var(--line);
+    display: flex; flex-direction: column; gap: 1.1rem;
+  }
+  header.masthead h1 { font-size: clamp(2.4rem, 7vw, 3.6rem); font-weight: 600; }
+  header.masthead .lede { font-size: 1.12rem; color: var(--muted-ink); margin: 0; max-width: 35rem; }
+  .stamp { font-size: 0.78rem; color: var(--muted-ink); font-variant-numeric: tabular-nums; margin: 0; }
+
+  section { padding-top: 3.5rem; display: flex; flex-direction: column; gap: 1.4rem; }
+  section > h2 { font-size: 1.7rem; font-weight: 600; }
+  p { margin: 0; }
+  .note { color: var(--muted-ink); }
+  strong { font-weight: 600; }
+
+  /* --- Terreno: donde se puede y donde no --- */
+  .ground { display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--line); }
+  .ground .row {
+    display: grid;
+    grid-template-columns: 1.4rem 1fr auto;
+    column-gap: 0.9rem;
+    align-items: baseline;
+    padding: 0.95rem 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  @media (max-width: 32rem) {
+    .ground .row { grid-template-columns: 1.4rem 1fr; row-gap: 0.2rem; }
+    .ground .row .verdict { grid-column: 2; }
+  }
+  .ground .mark { font-family: var(--display); font-weight: 600; line-height: 1.4; }
+  .ground .win .mark { color: var(--ok); }
+  .ground .lose .mark { color: var(--accent); }
+  .ground .q { font-family: var(--mono); font-size: 0.87rem; }
+  .ground .verdict { font-size: 0.82rem; color: var(--muted-ink); text-align: right; }
+  @media (max-width: 32rem) { .ground .verdict { text-align: left; } }
+
+  /* --- Fases --- */
+  .phase {
+    border: 1px solid var(--line);
+    background: var(--surface);
+    padding: 1.5rem 1.6rem;
+    display: flex; flex-direction: column; gap: 0.9rem;
+  }
+  .phase.blocking { border-left: 3px solid var(--accent); }
+  .phase .head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.7rem; }
+  .phase .num {
+    font-family: var(--display); font-weight: 600;
+    font-size: 0.78rem; letter-spacing: 0.1em;
+    color: var(--muted-ink); text-transform: uppercase;
+  }
+  .phase h3 { font-size: 1.2rem; font-weight: 600; flex: 1 1 12rem; }
+  .phase .cost {
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--muted-ink);
+    border: 1px solid var(--line); border-radius: 3px;
+    padding: 0.15rem 0.5rem; white-space: nowrap;
+  }
+  .phase > p { font-size: 0.96rem; color: var(--muted-ink); }
+  .phase ul { margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.95rem; }
+  .phase ul span { color: var(--muted-ink); }
+
+  code {
+    font-family: var(--mono); font-size: 0.85em;
+    background: var(--sunk); padding: 0.1rem 0.35rem; border-radius: 3px;
+  }
+
+  pre {
+    font-family: var(--mono); font-size: 0.79rem; line-height: 1.6;
+    background: var(--sunk); border: 1px solid var(--line-soft);
+    padding: 1rem 1.1rem; margin: 0;
+    overflow-x: auto; border-radius: 4px;
+  }
+
+  .callout {
+    border-left: 3px solid var(--accent);
+    background: var(--surface);
+    padding: 1.2rem 1.4rem;
+    display: flex; flex-direction: column; gap: 0.55rem;
+  }
+  .callout h3 { font-size: 1.05rem; font-weight: 600; }
+  .callout p { font-size: 0.95rem; color: var(--muted-ink); }
+
+  .scroller { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.92rem; min-width: 32rem; }
+  th, td { text-align: left; padding: 0.7rem 0.9rem 0.7rem 0; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  th {
+    font-size: 0.66rem; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--muted-ink);
+    border-bottom: 1px solid var(--line);
+  }
+  td.when { font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  td.what { color: var(--muted-ink); }
+
+  ol.three {
+    list-style: none; margin: 0; padding: 0;
+    display: flex; flex-direction: column; gap: 0;
+    border-top: 1px solid var(--line);
+  }
+  ol.three > li {
+    display: grid; grid-template-columns: 2.6rem 1fr;
+    column-gap: 1rem; align-items: baseline;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  ol.three .rank {
+    font-family: var(--display); font-weight: 600; font-size: 1.05rem;
+    font-variant-numeric: tabular-nums; color: var(--ok);
+  }
+  ol.three div { display: flex; flex-direction: column; gap: 0.15rem; font-size: 0.97rem; }
+  ol.three span:not(.rank) { color: var(--muted-ink); font-size: 0.93rem; }
+
+  footer {
+    margin-top: 4rem; padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.83rem; color: var(--muted-ink);
+  }
+
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">Collins Motors &middot; Temuco</p>
+    <h1>Cómo nos encuentran</h1>
+    <p class="lede">Plan de posicionamiento en buscadores y en motores de respuesta. Empieza por reconocer dónde no vale la pena competir.</p>
+    <p class="stamp">1 de septiembre de 2026</p>
+  </header>
+
+  <section>
+    <h2>El terreno</h2>
+    <p class="note">Un portal nacional como Yapo o Chileautos tiene años de autoridad acumulada. Pelear de frente contra ellos por búsquedas de modelo es perder tiempo y plata. Lo que sigue es dónde sí se gana.</p>
+
+    <div class="ground">
+      <div class="row lose">
+        <span class="mark">&times;</span>
+        <span class="q">bmw 120i usado</span>
+        <span class="verdict">Perdida. Es de los portales</span>
+      </div>
+      <div class="row lose">
+        <span class="mark">&times;</span>
+        <span class="q">autos usados chile</span>
+        <span class="verdict">Perdida. Volumen nacional</span>
+      </div>
+      <div class="row win">
+        <span class="mark">&check;</span>
+        <span class="q">automotora temuco</span>
+        <span class="verdict">Ganable. Alta intención</span>
+      </div>
+      <div class="row win">
+        <span class="mark">&check;</span>
+        <span class="q">camioneta diesel temuco</span>
+        <span class="verdict">Ganable. Cola larga local</span>
+      </div>
+      <div class="row win">
+        <span class="mark">&check;</span>
+        <span class="q">collins motors</span>
+        <span class="verdict">Obligatoria. Es la marca</span>
+      </div>
+      <div class="row win">
+        <span class="mark">&check;</span>
+        <span class="q">qué automotoras hay en temuco</span>
+        <span class="verdict">Abierta. Nadie la ocupa aún</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Por qué AEO antes que SEO</h2>
+    <p>Los motores de respuesta &mdash;ChatGPT, Perplexity, los resúmenes de Google&mdash; no rankean páginas: arman una respuesta a partir de hechos estructurados. Y sobre automotoras chilenas locales casi no tienen datos.</p>
+    <p>Eso significa que el espacio está vacío justo ahora, y que se gana con algo distinto a la autoridad de dominio: <strong>ser la fuente mejor estructurada</strong>. Un sitio pequeño puede lograrlo; contra el ranking clásico de Yapo, no.</p>
+    <p class="note">Es una ventaja con fecha de vencimiento. En dos años este espacio va a estar tan disputado como el buscador tradicional.</p>
+  </section>
+
+  <section>
+    <h2>El problema del stock que rota</h2>
+
+    <div class="callout">
+      <h3>Los autos se venden; las páginas que rankean, mueren</h3>
+      <p>Una ficha tarda meses en posicionar y el auto se vende en semanas. Invertir el esfuerzo en fichas individuales es llenar un balde agujereado.</p>
+      <p>Los activos que sí duran son las <strong>páginas de categoría</strong>: camionetas en Temuco, autos automáticos, SUV bajo cierto precio. Esas nunca se agotan, se renuevan solas con el inventario, y son exactamente las que hoy no tienen ni título propio ni texto.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>El plan</h2>
+
+    <div class="phase blocking">
+      <div class="head">
+        <span class="num">Fase 0</span>
+        <h3>Decidir el dominio antes de indexar</h3>
+        <span class="cost">1 hora</span>
+      </div>
+      <p>Hoy el sitio invita a Google a indexar la dirección de prueba. Si después se publica en el dominio definitivo, quedan dos versiones compitiendo entre sí y la autoridad se reparte.</p>
+      <ul>
+        <li>Poner <code>noindex</code> mientras sea maqueta <span>&mdash; una línea</span></li>
+        <li>Definir dominio final y apuntarlo <span>&mdash; decisión del negocio</span></li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="head">
+        <span class="num">Fase 1</span>
+        <h3>Existir para las máquinas</h3>
+        <span class="cost">2 a 3 días</span>
+      </div>
+      <p>Hoy no hay un solo dato estructurado en el sitio. Sin esto, ningún motor sabe que Collins Motors es una automotora, dónde queda ni qué vende.</p>
+      <ul>
+        <li><strong>AutoDealer</strong> <span>&mdash; nombre, dirección, teléfono, horario, coordenadas y enlaces a redes. Es la ficha de identidad</span></li>
+        <li><strong>Vehicle + Offer</strong> por ficha <span>&mdash; precio, disponibilidad, año, kilometraje</span></li>
+        <li><strong>BreadcrumbList</strong> <span>&mdash; jerarquía del sitio</span></li>
+        <li><code>sitemap.xml</code> generado del inventario publicado <span>&mdash; hoy devuelve error</span></li>
+        <li><code>robots.txt</code> <span>&mdash; hoy también</span></li>
+        <li>Canonical en todas las páginas, y los filtros apuntando al catálogo <span>&mdash; evita decenas de duplicados</span></li>
+      </ul>
+      <pre>{
+  "@context": "https://schema.org",
+  "@type": "AutoDealer",
+  "name": "Collins Motors",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Bernardo O'Higgins 252",
+    "addressLocality": "Temuco",
+    "addressRegion": "La Araucanía",
+    "addressCountry": "CL"
+  },
+  "telephone": "+56 9 6151 1074",
+  "openingHours": "Mo-Fr 09:00-19:00",
+  "sameAs": ["instagram", "facebook", "google business"]
+}</pre>
+    </div>
+
+    <div class="phase">
+      <div class="head">
+        <span class="num">Fase 2</span>
+        <h3>Google Business Profile</h3>
+        <span class="cost">2 horas + constancia</span>
+      </div>
+      <p>Es la pieza de mayor impacto de todo el plan, y no vive en el sitio. Quien busca una automotora desde el celular ve primero el mapa, no los resultados azules.</p>
+      <ul>
+        <li>Categoría correcta, horario, fotos del patio y del equipo</li>
+        <li>Dirección idéntica a la del sitio <span>&mdash; cualquier diferencia debilita la señal</span></li>
+        <li><strong>Pedir reseña a cada cliente que compra</strong> <span>&mdash; es el factor de confianza número uno para una automotora local</span></li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="head">
+        <span class="num">Fase 3</span>
+        <h3>Páginas de categoría con identidad</h3>
+        <span class="cost">1 a 2 días</span>
+      </div>
+      <p>Convertir los filtros en páginas de verdad, que son los activos que sobreviven a la rotación del stock.</p>
+      <ul>
+        <li>Título, encabezado y texto propios por categoría <span>&mdash; camionetas, SUV, automáticos, por rango de precio</span></li>
+        <li>Enlazarlas desde la portada y el pie <span>&mdash; hoy solo se llega filtrando</span></li>
+        <li>Indexar solo las combinaciones que valen; el resto, canonical al catálogo</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="head">
+        <span class="num">Fase 4</span>
+        <h3>Contenido que se pueda citar</h3>
+        <span class="cost">medio día + redacción</span>
+      </div>
+      <p>Los motores de respuesta citan hechos, no adjetivos. Hoy la página Nosotros dice transparencia, confianza y calidad: nada de eso es verificable, así que no sirve de nada.</p>
+      <ul>
+        <li>Reescribir Nosotros con datos reales <span>&mdash; desde qué año, cuántos autos vendidos, qué garantía, quiénes son</span></li>
+        <li><strong>FAQ con marcado</strong> <span>&mdash; financiamiento, parte de pago, medios de pago. La materia prima ya está cargada en cada vehículo</span></li>
+        <li><code>llms.txt</code> <span>&mdash; convención emergente para que los modelos entiendan el sitio</span></li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="head">
+        <span class="num">Fase 5</span>
+        <h3>Velocidad y medición</h3>
+        <span class="cost">medio día</span>
+      </div>
+      <ul>
+        <li>Imágenes optimizadas <span>&mdash; hoy el celular descarga cada foto a tamaño completo</span></li>
+        <li>Search Console <span>&mdash; para saber qué se busca antes de llegar</span></li>
+        <li>Revisar qué categorías traen visitas y reforzar esas</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Qué esperar, y cuándo</h2>
+    <p class="note">El SEO local no es inmediato. Estos plazos son realistas, no optimistas.</p>
+    <div class="scroller">
+      <table>
+        <thead>
+          <tr><th scope="col">Plazo</th><th scope="col">Qué debería pasar</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="when">Semana 1</td>
+            <td class="what">El perfil de Google empieza a aparecer en el mapa. Es lo único que da resultado rápido.</td>
+          </tr>
+          <tr>
+            <td class="when">Semanas 2 a 4</td>
+            <td class="what">Google indexa las fichas y categorías. Aparecen las primeras búsquedas de marca.</td>
+          </tr>
+          <tr>
+            <td class="when">Mes 2 a 3</td>
+            <td class="what">Los motores de respuesta empiezan a reconocer la automotora como entidad y a citarla.</td>
+          </tr>
+          <tr>
+            <td class="when">Mes 3 a 6</td>
+            <td class="what">Posiciones reales en búsquedas locales. Depende tanto de las reseñas como del sitio.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Si solo se hacen tres cosas</h2>
+    <ol class="three">
+      <li>
+        <span class="rank">01</span>
+        <div>
+          <strong>Google Business Profile con reseñas.</strong>
+          <span>Fuera del sitio, y aun así lo que más mueve.</span>
+        </div>
+      </li>
+      <li>
+        <span class="rank">02</span>
+        <div>
+          <strong>Datos estructurados de la automotora y de cada vehículo.</strong>
+          <span>Es la puerta de entrada a los motores de respuesta.</span>
+        </div>
+      </li>
+      <li>
+        <span class="rank">03</span>
+        <div>
+          <strong>Sitemap y canonical.</strong>
+          <span>Sin esto Google ni siquiera descubre el inventario.</span>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <footer>
+    Documento de trabajo &middot; Collins Motors &middot; Refleja el estado del sitio al 1 de septiembre de 2026.
+  </footer>
+
+</div>
