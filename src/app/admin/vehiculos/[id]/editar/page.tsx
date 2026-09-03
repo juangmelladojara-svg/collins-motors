@@ -44,6 +44,7 @@ export default function EditarVehiculoPage() {
     vendedor_telefono: '',
     ubicacion: '',
     opciones_financiamiento: [] as string[],
+    vin: '',
   });
 
   const [caracteristicaInput, setCaracteristicaInput] = useState('');
@@ -82,6 +83,7 @@ export default function EditarVehiculoPage() {
           vendedor_telefono: data.vendedor_telefono || '',
           ubicacion: data.ubicacion || '',
           opciones_financiamiento: data.opciones_financiamiento || [],
+          vin: data.vin || '',
         });
 
         const { data: imagenes, error: imageError } = await supabase
@@ -455,6 +457,22 @@ export default function EditarVehiculoPage() {
                   onChange={handleInputChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                 />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  VIN / N.º de chasis <span className="font-normal text-gray-500">(opcional)</span>
+                </label>
+                <input
+                  type="text"
+                  name="vin"
+                  placeholder="Ej: WBA1A5C50DF123456"
+                  value={form.vin}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                />
+                <p className="mt-1 text-xs text-gray-500">
+                  Mejora la segmentación en los anuncios de Meta. Se puede dejar vacío.
+                </p>
               </div>
             </div>
           </div>

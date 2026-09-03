@@ -201,7 +201,7 @@
     <p class="eyebrow">Collins Motors &middot; Temuco</p>
     <h1>Cómo nos encuentran</h1>
     <p class="lede">Plan de posicionamiento en buscadores y en motores de respuesta. Empieza por reconocer dónde no vale la pena competir.</p>
-    <p class="stamp">1 de septiembre de 2026</p>
+    <p class="stamp">3 de septiembre de 2026</p>
   </header>
 
   <section>
@@ -361,6 +361,44 @@
         <li>Revisar qué categorías traen visitas y reforzar esas</li>
       </ul>
     </div>
+
+    <div class="phase">
+      <div class="head">
+        <span class="num">Fase 6</span>
+        <h3>Feed para anuncios</h3>
+        <span class="cost">feed entregado</span>
+      </div>
+      <p>Hasta acá el plan busca que la gente llegue sola. Esto es lo contrario: pagar por mostrar <strong>un auto concreto de la vitrina</strong> a alguien que ya demostró interés. Ambas plataformas funcionan igual: se les entrega un archivo con el inventario y ellas arman un anuncio por vehículo, con su foto, su precio y su enlace.</p>
+      <p>La ventaja frente a un aviso normal es que no hay que crear una pieza por auto. El anuncio se genera del inventario, y cuando el auto se vende, desaparece.</p>
+
+      <div class="callout">
+        <h3>Google Vehicle Ads no opera en Chile</h3>
+        <p>Google lista Australia, Canadá, Japón y Estados Unidos como disponibles, más seis países europeos en beta. Chile no está en ninguna de las dos listas, así que Merchant Center no es una opción hoy.</p>
+        <p>La propia documentación de Google indica la salida: en países sin Shopping se usan <em>business data feeds</em> con tipo de negocio &laquo;Custom&raquo;, que sí operan acá. Eso es lo que se entregó, y cumple el objetivo: mostrarle a quien miró un auto un aviso de ese mismo auto.</p>
+      </div>
+
+      <ul>
+        <li><strong>Meta Automotive Inventory Ads</strong> <span>&mdash; catálogo tipo automotriz en Commerce Manager. Segmenta a nivel de vehículo individual y es el canal más directo, porque la gente ya busca autos en Marketplace</span></li>
+        <li><strong>Google Ads, remarketing dinámico</strong> <span>&mdash; recupera al que visitó una ficha y se fue sin escribir. Suele ser el clic más barato de toda la cuenta</span></li>
+      </ul>
+
+      <p>Los dos archivos se generan solos desde la misma base que alimenta el sitio, y viven en:</p>
+      <pre>/feed/meta-vehiculos.csv
+/feed/google-remarketing.csv</pre>
+    </div>
+
+    <div class="callout">
+      <h3>El feed hay que refrescarlo, y se conecta con el stock que rota</h3>
+      <p>Un feed desactualizado es peor que no tener anuncios: se paga por mostrar autos ya vendidos, la gente llega a una ficha que dice Vendido, y las plataformas castigan la cuenta por eso.</p>
+      <p>Por eso los feeds no son archivos que alguien sube a mano: se generan en el momento en que la plataforma los pide, y solo incluyen vehículos publicados y disponibles. <strong>Marcar un auto como Vendido en el panel lo saca de ambas plataformas en el siguiente refresco</strong>, sin que nadie tenga que acordarse. Programar esa descarga entre una y dos veces al día es suficiente.</p>
+      <p>Un vehículo sin fotos cargadas tampoco entra: ambas plataformas rechazan los avisos sin imagen, y las filas rechazadas ensucian la salud del catálogo completo.</p>
+    </div>
+
+    <div class="callout">
+      <h3>Las cuentas de publicidad son del negocio, no nuestras</h3>
+      <p>Nosotros entregamos el feed técnico. Las cuentas donde se conecta &mdash;Google Merchant Center, Google Ads y el catálogo de Meta Commerce Manager&mdash; las crea Collins Motors, quedan ligadas a su Business Manager y a su medio de pago, y son suyas.</p>
+      <p>Esto no es un tecnicismo. Si esas cuentas se crean a nombre de un tercero, la automotora pierde el historial de campañas, los públicos acumulados y el acceso a su propia inversión el día que cambie de proveedor. Lo que corresponde es que Collins Motors las abra y nos dé acceso como colaboradores.</p>
+    </div>
   </section>
 
   <section>
@@ -372,6 +410,10 @@
           <tr><th scope="col">Plazo</th><th scope="col">Qué debería pasar</th></tr>
         </thead>
         <tbody>
+          <tr>
+            <td class="when">Inmediato</td>
+            <td class="what">Los anuncios de la Fase 6 rinden desde el día uno, porque se paga por aparecer. Es el único canal del plan que no espera. Todo lo demás se gana con tiempo.</td>
+          </tr>
           <tr>
             <td class="when">Semana 1</td>
             <td class="what">El perfil de Google empieza a aparecer en el mapa. Es lo único que da resultado rápido.</td>
@@ -421,7 +463,7 @@
   </section>
 
   <footer>
-    Documento de trabajo &middot; Collins Motors &middot; Refleja el estado del sitio al 1 de septiembre de 2026.
+    Documento de trabajo &middot; Collins Motors &middot; Refleja el estado del sitio al 3 de septiembre de 2026.
   </footer>
 
 </div>

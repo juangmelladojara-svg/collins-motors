@@ -23,6 +23,8 @@ export interface Vehiculo {
   publicado: boolean;
   destacado: boolean;
   meta_descripcion?: string;
+  /** Número de chasis. Opcional; lo usan los feeds de anuncios. */
+  vin?: string;
   fecha_publicacion?: string;
   caracteristicas?: string[];
   vendedor_nombre?: string;
